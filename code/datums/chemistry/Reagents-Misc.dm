@@ -28,9 +28,9 @@ datum
 			// ...
 
 			// explosive properties
-			// relatively inert as a solid (T <= 14°C)
-			// rather explosive as a liquid (14 °C < T <= 50 °C)
-			// explodes instantly as a gas (50 °C < T)
+			// relatively inert as a solid (T <= 14Â°C)
+			// rather explosive as a liquid (14 Â°C < T <= 50 Â°C)
+			// explodes instantly as a gas (50 Â°C < T)
 
 			proc/explode(var/turf/T, expl_reason, del_holder=1)
 				message_admins("Nitroglycerin explosion (volume = [volume]) due to [expl_reason] at [showCoords(T.x, T.y, T.z)].")
@@ -73,9 +73,9 @@ datum
 			on_transfer(var/datum/reagents/source, var/datum/reagents/target, var/trans_volume)
 				var/datum/reagent/nitroglycerin/target_ng = target.get_reagent("nitroglycerin")
 				logTheThing("combat", usr, null, "caused physical shock to nitroglycerin by transferring [trans_volume]u from [source.my_atom] to [target.my_atom].")
-				// mechanical dropper transfer (1u): solid at 14°C: 0%, liquid: 0%
-				// classic dropper transfer (5u): solid at 14°C: 0% (due to min force cap), liquid: 20%
-				// beaker transfer (10u): solid at -36°C: 0%, solid: 5%, liquid: 30%
+				// mechanical dropper transfer (1u): solid at 14Â°C: 0%, liquid: 0%
+				// classic dropper transfer (5u): solid at 14Â°C: 0% (due to min force cap), liquid: 20%
+				// beaker transfer (10u): solid at -36Â°C: 0%, solid: 5%, liquid: 30%
 				// the only safe way to transfer nitroglycerin is by freezing it
 				// thenagain, it may explode when being thawed unless heated *very* slowly
 				target_ng.physical_shock(round(0.45 * trans_volume))
@@ -83,7 +83,7 @@ datum
 		copper_nitrate
 			name = "copper nitrate"
 			id = "copper_nitrate"
-			description = "An intermediary which sublimates at 180 °C."
+			description = "An intermediary which sublimates at 180 Â°C."
 			reagent_state = SOLID
 			fluid_r = 0
 			fluid_g = 0
@@ -283,6 +283,41 @@ datum
 						H.equip_if_possible(moustache, H.slot_wear_mask)
 						H.set_clothing_icon_dirty()
 					if (somethingchanged) boutput(H, "<span style=\"color:red\">Hair bursts forth from every follicle on your head!</span>")
+				..(M)
+				return
+
+		buttium //butt badness
+			name = "buttium"
+			id = "buttium"
+			description = "What the fuck is this shit?!"
+			fluid_r = 100
+			fluid_b = 100
+			fluid_g = 255
+			transparency = 205
+			penetrates_skin = 1 // why wouldn't it, really
+			value = 34 // 20 13 1
+
+			on_mob_life(var/mob/M)
+				if (!M) M = holder.my_atom
+				if (ishuman(M))
+					var/somethingchanged = 0
+					var/mob/living/carbon/human/H = M
+					H.set_face_icon_dirty()
+					if (!(H.head && istype(H.head, /obj/item/clothing/head/butt) && hasvar(H.head, "stapled") && H.head:stapled))
+						somethingchanged = 1
+						for (var/obj/item/clothing/O in H)
+							if (istype(O,/obj/item/clothing/head))
+								H.u_equip(O)
+								if (O)
+									O.set_loc(H.loc)
+									O.dropped(H)
+									O.layer = initial(O.layer)
+
+						var/obj/item/clothing/head/butt/butt = new /obj/item/clothing/head/butt(H)
+						H.equip_if_possible(butt, H.slot_head)
+						H.set_clothing_icon_dirty()
+						butt.staple()
+					if (somethingchanged) boutput(H, "<span style=\"color:red\">A butt bursts forth from your head!</span>")
 				..(M)
 				return
 
@@ -1318,6 +1353,38 @@ datum
 			reaction_turf(var/turf/T, var/volume)
 				src = null
 				T.color = rgb(rand(0,255),rand(0,255),rand(0,255))
+				return
+
+		expungium
+			name = "expungium"
+			id = "expungium"
+			description = "It's pure liquid darkness and void. That's a thing now."
+			reagent_state = LIQUID
+			fluid_r = 255
+			fluid_g = 255
+			fluid_b = 255
+			transparency = 255
+			hygiene_value = -1.0
+
+			reaction_mob(var/mob/M, var/method = TOUCH, var/volume)
+				if (method == INGEST)
+					if (ishuman(M))
+						M:blood_color = "#[num2hex(0)][num2hex(0)][num2hex(0)]"
+				return
+
+			reaction_obj(var/obj/O, var/volume)
+				src = null
+				if((istype(O, /obj/item))&&(O:w_class < 3))
+					for(var/mob/M in AIviewers(5, O))
+						boutput(M, "<span style=\"color:red\">\the [O] fades into blackness.</span>")
+					qdel(O)
+				else
+					O.color = rgb(0,0,0)
+				return
+
+			reaction_turf(var/turf/T, var/volume)
+				src = null
+				T.color = rgb(0,0,0)
 				return
 
 		shark_dna
