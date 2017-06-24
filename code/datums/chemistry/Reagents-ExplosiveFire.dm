@@ -253,6 +253,59 @@ datum
 					ignited = 1
 					smoke_reaction(holder, min(round(volume / 5) + 1, 4), get_turf(holder.my_atom))
 
+
+		combustible/foampowder
+			name = "foam powder"
+			id = "foampowder"
+			description = "Produces foam when heated."
+			reagent_state = SOLID
+			fluid_r = 200
+			fluid_g = 200
+			fluid_b = 200
+			transparency = 230
+			var/ignited = 0
+
+			pooled()
+				..()
+				ignited = 0
+
+			reaction_temperature(exposed_temperature, exposed_volume) //ugh fuck this proc seriously
+				if(exposed_temperature > T0C + 100 && !ignited)
+					// Instant foam and smoke reactions are handled in Chemistry-Holder.dm (Convair880).
+					var/turf/T = get_turf(holder.my_atom)
+					var/mob/our_user = null
+					var/our_fingerprints = null
+					// Sadly, we don't automatically get a mob reference under most circumstances.
+					// If there's an existing lookup proc and/or better solution, I haven't found it yet.
+					// If everything else fails, maybe there are fingerprints on the container for us to check though?
+					if (ismob(holder.my_atom)) // Our mob, the container.
+						our_user = holder.my_atom
+					else if (holder && holder.my_atom && (ismob(holder.my_atom.loc))) // Backpacks etc.
+						our_user = holder.my_atom.loc
+					else
+						our_user = usr
+					if (holder.my_atom.fingerprintslast) // Our container. You don't necessarily have to pick it up to transfer stuff.
+						our_fingerprints = holder.my_atom.fingerprintslast
+					else if (holder.my_atom.loc.fingerprintslast) // Backpacks etc.
+						our_fingerprints = holder.my_atom.loc.fingerprintslast
+					if (our_user && ismob(our_user))
+						logTheThing("combat", our_user, null, "Heat-triggered [src.name] chemical reaction [log_reagents(holder.my_atom)] at [T ? "[log_loc(T)]" : "null"].")
+					else
+						logTheThing("combat", our_user, null, "Heat-triggered [src.name] chemical reaction [log_reagents(holder.my_atom)] at [T ? "[log_loc(T)]" : "null"].[our_fingerprints ? " Container last touched by: [our_fingerprints]." : ""]")
+					ignited = 1
+					var/location = get_turf(holder.my_atom)
+					for(var/mob/M in AIviewers(5, location))
+						boutput(M, "<span style=\"color:red\">The solution violently bubbles!</span>")
+						location = get_turf(holder.my_atom)
+					for(var/mob/M in AIviewers(5, location))
+						boutput(M, "<span style=\"color:red\">The solution spews out foam!</span>")
+
+					var/datum/effects/system/foam_spread/s = new()
+					s.set_up(exposed_volume, location, holder, 0)
+					s.start()
+					holder.clear_reagents()
+					return
+
 		combustible/sonicpowder
 			name = "hootingium"
 			id = "sonicpowder"
