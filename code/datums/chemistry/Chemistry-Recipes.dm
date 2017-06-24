@@ -88,7 +88,7 @@ datum
 			on_reaction(var/datum/reagents/holder, var/created_volume)
 				if (holder)
 					holder.del_reagent("thalmerite")
-					holder.del_reagent("smokepowder")
+					holder.del_reagent("R")
 				return
 
 		nitroglycerin_violent_reaction
@@ -545,7 +545,7 @@ datum
 			drinkrecipe = 1
 
 		cocktail_beepskybeer
-			name = "Beepskybräu Security Schwarzbier"
+			name = "BeepskybrÃ¤u Security Schwarzbier"
 			id = "beepskybeer"
 			result = "beepskybeer"
 			required_reagents = list("beer" = 1, "nanites" = 1)
@@ -849,7 +849,7 @@ datum
 			mix_sound = 'sound/effects/blobattack.ogg'
 
 		cocktail_pinacolada
-			name = "Piña Colada"
+			name = "PiÃ±a Colada"
 			id = "pinacolada"
 			result = "pinacolada"
 			required_reagents = list("juice_pineapple" = 1, "rum" = 1, "coconut_milk" = 1)
@@ -1942,6 +1942,14 @@ datum
 			result_amount = 5
 			mix_phrase = "A head of foam results from the mixture's constant fizzing."
 			mix_sound = 'sound/misc/drinkfizz.ogg'
+
+		smokepowder
+			name = "Foam Powder"
+			id = "foampowder"
+			result = "foampowder"
+			required_reagents = list("fluorosurfactant" = 1, "water" = 1, "stabiliser" = 1)
+			result_amount = 3
+			mix_phrase = "The mixture sets into a greyish powder!"
 
 		firefoam
 			name = "Firefighting foam"
