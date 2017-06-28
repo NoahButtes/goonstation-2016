@@ -132,6 +132,21 @@ datum
 				get_fucked_clarks
 				explosion(my_atom, get_turf(my_atom), 0, 1, 4, 5)
 				return
+				
+
+		nitroglycerin_violent_reaction4
+			name = "Nitroglycerin Foam (powder)"
+			id = "nitroglycerin_foam"
+			result = "nitroglycerin_foam"
+			required_reagents = list("nitroglycerin" = 1, "foampowder" = 1)
+			instant = 1
+			mix_phrase = "The substance violently detonates!"
+			mix_sound = 'sound/effects/bang.ogg'
+			on_reaction(var/datum/reagents/holder, var/created_volume)
+				var/atom/my_atom = holder.my_atom
+				get_fucked_clarks
+				explosion(my_atom, get_turf(my_atom), 0, 1, 4, 5)
+				return
 
 		// also no more fermid foams, fu nerds tOt
 
@@ -150,6 +165,22 @@ datum
 					holder.del_reagent("booster_enzyme")
 					holder.del_reagent("fluorosurfactant")
 					holder.del_reagent("water")
+				return
+
+		no_fermid_foam2
+			name = "no fermid foam (powder)"
+			id = "no_fermid_foam"
+			instant = 1
+			required_reagents = list("ants" = 1, "mutagen" = 1, "aranesp" = 1, "booster_enzyme" = 1, "foampowder" = 1)
+			mix_phrase = "A single fermid leg reaches out of the container. It flips you off. Somehow."
+			mix_sound = 'sound/misc/trombone.ogg'
+			on_reaction(var/datum/reagents/holder, var/created_volume)
+				if (holder)
+					holder.del_reagent("ants")
+					holder.del_reagent("mutagen")
+					holder.del_reagent("aranesp")
+					holder.del_reagent("booster_enzyme")
+					holder.del_reagent("foampowder")
 				return
 
 		booster_enzyme
