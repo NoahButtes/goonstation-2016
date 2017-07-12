@@ -960,10 +960,14 @@ var/datum/particleMaster/particleMaster = new
 /datum/particleSystem/swoosh/endless
 	endless = 1
 
+/datum/particleSystem/swoosh/endless/green
+	color = "#A3F17F"
+
 /datum/particleSystem/swoosh
 	var/endless = 0
+	var/color = "#5C0E80"
 	New(var/atom/location = null)
-		..(location, "swoosh", 45, "#5C0E80")
+		..(location, "swoosh", 45, color)
 
 	Run()
 		set background = 1

@@ -1084,6 +1084,84 @@ datum
 				..(M)
 				return
 
+		hootagen_unstable
+			name = "Unstable Hootagen"
+			id = "hootagen_unstable"
+			description = "A flawed isomer of a special, targeted hootagen.  If only it were perfected..."
+			reagent_state = LIQUID
+			fluid_r = 240
+			fluid_g = 255
+			fluid_b = 240
+			transparency = 200
+			depletion_rate = 0.2
+
+			on_mob_life(var/mob/M)
+				if (!M) M = holder.my_atom
+
+				var/our_amt = holder.get_reagent_amount(src.id)
+				if (prob(25))
+					M.reagents.add_reagent("histamine", rand(5,10))
+				if (our_amt < 5)
+					M.take_toxin_damage(1)
+					random_brute_damage(M, 1)
+					M.updatehealth()
+				else if (our_amt < 10)
+					if (prob(8))
+						M.visible_message("<span style=\"color:red\">[M] hoots all over \himself.</span>", "<span style=\"color:red\">You hoot all over yourself!</span>")
+						playsound(M.loc, "sound/effects/splat.ogg", 50, 1)
+						new /obj/decal/cleanable/vomit(M.loc)
+					M.take_toxin_damage(2)
+					random_brute_damage(M, 2)
+					M.updatehealth()
+
+				else if (prob(4))
+					M.visible_message("<span style=\"color:red\"><B>[M]</B> starts hooting violently!</span>", "You feel as if your body is hooting itself apart!")
+					M.weakened = max(15, M.weakened)
+					M.make_jittery(1000)
+					spawn(rand(20, 100))
+						M.owlgib()
+					return
+
+				..(M)
+				return
+
+		hootagen_stable
+			name = "Stable Hootagen"
+			id = "super_hairgrownium"
+			description = "HOOT HOOT HOOT HOOT"
+			fluid_r = 100
+			fluid_b = 100
+			fluid_g = 255
+			transparency = 205
+			penetrates_skin = 1
+			value = 37
+			depletion_rate = 0
+
+			on_mob_life(var/mob/M)
+				if (!M) M = holder.my_atom
+
+				if (ishuman(M))
+					var/somethingchanged = 0
+					var/mob/living/carbon/human/H = M
+					if (!((H.wear_mask && istype(H.wear_mask, /obj/item/clothing/mask/owl_mask))&&(H.w_uniform && istype(H.w_uniform, /obj/item/clothing/under/gimmick/owl))))
+						somethingchanged = 1
+						for(var/obj/item/clothing/O in H)
+							H.u_equip(O)
+							if (O)
+								O.set_loc(H.loc)
+								O.dropped(H)
+								O.layer = initial(O.layer)
+
+						var/obj/item/clothing/under/gimmick/owl/owlsuit = new /obj/item/clothing/under/gimmick/owl(H)
+						owlsuit.cant_self_remove = 1
+						var/obj/item/clothing/mask/owl_mask/owlmask = new /obj/item/clothing/mask/owl_mask(H)
+						owlmask.cant_self_remove = 1
+
+						H.equip_if_possible(owlsuit, H.slot_w_uniform)
+						H.equip_if_possible(owlmask, H.slot_wear_mask)
+					if (somethingchanged) boutput(H, "<span style=\"color:red\">HOOT HOOT HOOT HOOT!</span>")
+				..(M)
+				return
 		sewage
 			name = "sewage"
 			id = "sewage"
@@ -2295,6 +2373,123 @@ datum
 			on_mob_life(var/mob/M)
 				..(M)
 				M.ex_act(1)
+
+		exilium
+			name = "exilium"
+			id = "exilium"
+			description = "A homogenous liquid that seems to be distorting space."
+			reagent_state = LIQUID
+			fluid_r = 0
+			fluid_g = 15
+			fluid_b = 5
+			transparency = 255
+			penetrates_skin = 1
+			depletion_rate = 0
+			value = 935 //anima, but backwards!
+			var/fateful = 0
+
+			proc/exile(var/mob/M=null, var/obj/O=null, fate=0)
+				if (M)
+					if (fate == 1)
+						var/turfs = list()
+						for(var/turf/T in world)
+							turfs += T
+						var/turf = pick(turfs)
+						for(var/mob/Q in AIviewers(5, M))
+							boutput(Q, "<span style=\"color:red\">\[M] is banished and warps away!</span>")
+						M.set_loc(turf)
+					else
+						var/turfs = list()
+						for(var/turf/T in telesci)
+							turfs += T
+						var/turf = pick(turfs)
+						for(var/mob/Q in AIviewers(5, M))
+							boutput(Q, "<span style=\"color:red\">\[M] is banished and warps away!</span>")
+						M.set_loc(turf)
+				else if (O)
+					if (fate == 1)
+						var/turfs = list()
+						for(var/turf/T in world)
+							turfs += T
+						var/turf = pick(turfs)
+						for(var/mob/Q in AIviewers(5, O))
+							boutput(Q, "<span style=\"color:red\">\The [O] is banished and warps away!</span>")
+						O.set_loc(turf)
+					else
+						var/turfs = list()
+						for(var/turf/T in telesci)
+							turfs += T
+						var/turf = pick(turfs)
+						for(var/mob/Q in AIviewers(5, O))
+							boutput(Q, "<span style=\"color:red\">\The [O] is banished and warps away!</span>")
+						O.set_loc(turf)
+
+			reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
+				if (src.fateful == 1)
+					exile(M,null,1)
+				else
+					exile(M,null)
+
+			reaction_obj(var/obj/O, var/volume)
+				if (src.fateful == 1)
+					exile(null,O,1)
+				else
+					exile(null,O)
+
+			on_mob_life(var/mob/M)
+				..(M)
+				if (prob(1))
+					if (src.fateful == 1)
+						exile(M,null,1)
+					else
+						exile(M,null)
+
+			on_add() //shamelessly copied from anima
+				// Marq fix for cannot read null.my_atom
+				if (!holder)
+					return
+				var/atom/A = holder.my_atom
+				if (A)
+					animate_flash_color_fill(A,"#A3F17F",-1, 10)
+				if (ismob(A))
+					if (!particleMaster.CheckSystemExists(/datum/particleSystem/swoosh/endless/green, A))
+						particleMaster.SpawnSystem(new /datum/particleSystem/swoosh/endless/green(A))
+				return
+
+			on_remove()
+				var/atom/A = holder.my_atom
+				if (A)
+					animate_flash_color_fill(A,"#A3F17F", 1, 10)
+
+				if (ismob(A))
+					particleMaster.RemoveSystem(/datum/particleSystem/swoosh/endless/green, A)
+				return
+
+		exilium/fate //Only use for shenanigans. WILL BREAK STUFF.
+			name = "liquid chaos"
+			id = "exilium-fate"
+			description = "God help us now."
+			fateful = 1 //this is why
+
+		ageinium // :effort:
+			name = "ageinium"
+			id = "ageinium"
+			description = "Time seems to be accelerating in the vicinity of this substance."
+			reagent_state = LIQUID
+			fluid_r = 247
+			fluid_g = 122
+			fluid_b = 32
+			transparency = 200
+
+			on_mob_life(var/mob/M)
+				if (!M) M = holder.my_atom
+
+				if(prob(30) && istype(M,/mob/living/carbon/human))
+					var/mob/living/carbon/human/H = M
+					H.bioHolder.age++
+					if(prob(10)) boutput(H, "<span style=\"color:red\">You feel [pick("old", "strange", "frail", "peculiar", "odd")].</span>")
+					if(prob(4)) H.emote("scream")
+				..(M)
 
 		cyclopentanol
 			name = "cyclopentanol"
