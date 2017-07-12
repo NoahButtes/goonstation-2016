@@ -1,11 +1,11 @@
 // BEGIN_INTERNALS
 /*
 LAST_COMPILE_TIME: 1499892770
-DIR: code code\chui\example code\datums code\datums\buildmodes\adventure code\datums\buildmodes\adventure\elements code\datums\chemistry code\datums\critter_mobs\health code\datums\diseases code\datums\effects\system code\datums\genetics code\datums\hud code\datums\projectiles code\obj code\obj\critter code\WorkInProgress 
+DIR: code code\chui\example code\datums code\datums\buildmodes\adventure code\datums\buildmodes\adventure\elements code\datums\chemistry code\datums\critter_mobs\health code\datums\diseases code\datums\effects\system code\datums\genetics code\datums\hud 
 AUTO_FILE_DIR: OFF
 MAP_ICON_TYPE: 0
 LAST_COMPILE_VERSION: 511.1374
-WINDOW: code\datums\chemistry\Reagents-Misc.dm;code\datums\chemistry\Reagents-Base.dm;code\datums\chemistry\Reagents-ExplosiveFire.dm;code\datums\chemistry\Reagents-Diseases.dm;code\datums\chemistry\Reagents-PoisonEtc.dm;code\datums\chemistry\Reagents-Drugs.dm;code\datums\chemistry\Chemistry-Reagents.dm;code\WorkInProgress\Particles.dm;code\datums\diseases\parasites.dm;code\datums\projectiles\owl.dm
+WINDOW: code\datums\chemistry\Reagents-Misc.dm;code\datums\chemistry\Reagents-Base.dm;code\datums\chemistry\Reagents-ExplosiveFire.dm;code\datums\chemistry\Reagents-Diseases.dm;code\datums\chemistry\Reagents-PoisonEtc.dm
 FILE: code\datums\chemistry\Reagents-Misc.dm
 */
 // END_INTERNALS
