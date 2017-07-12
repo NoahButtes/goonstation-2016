@@ -2396,7 +2396,7 @@ datum
 							turfs += T
 						var/turf = pick(turfs)
 						for(var/mob/Q in AIviewers(5, M))
-							boutput(Q, "<span style=\"color:red\">\<b>[M]</b> is banished and warps away!</span>")
+							boutput(Q, "<span style=\"color:red\"><b>[M]</b> is banished and warps away!</span>")
 						M.set_loc(turf)
 					else
 						var/turfs = list()
@@ -2404,7 +2404,7 @@ datum
 							turfs += T
 						var/turf = pick(turfs)
 						for(var/mob/Q in AIviewers(5, M))
-							boutput(Q, "<span style=\"color:red\">\<b>[M]</b> is banished and warps away!</span>")
+							boutput(Q, "<span style=\"color:red\"><b>[M]</b> is banished and warps away!</span>")
 						M.set_loc(turf)
 				else if (O)
 					if (fate == 1)
@@ -2413,7 +2413,7 @@ datum
 							turfs += T
 						var/turf = pick(turfs)
 						for(var/mob/Q in AIviewers(5, O))
-							boutput(Q, "<span style=\"color:red\">\The [O] is banished and warps away!</span>")
+							boutput(Q, "<span style=\"color:red\">The [O] is banished and warps away!</span>")
 						O.set_loc(turf)
 					else
 						var/turfs = list()
@@ -2421,7 +2421,7 @@ datum
 							turfs += T
 						var/turf = pick(turfs)
 						for(var/mob/Q in AIviewers(5, O))
-							boutput(Q, "<span style=\"color:red\">\The [O] is banished and warps away!</span>")
+							boutput(Q, "<span style=\"color:red\">The [O] is banished and warps away!</span>")
 						O.set_loc(turf)
 
 			reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
