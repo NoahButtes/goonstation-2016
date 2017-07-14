@@ -2388,61 +2388,32 @@ datum
 			value = 935 //anima, but backwards!
 			var/fateful = 0
 
-			proc/exile(var/mob/M=null, var/obj/O=null, fate=0)
-				if (M)
-					if (fate == 1)
-						var/turfs = list()
-						for(var/turf/T in world)
-							turfs += T
-						var/turf = pick(turfs)
-						for(var/mob/Q in AIviewers(5, M))
-							boutput(Q, "<span style=\"color:red\"><b>[M]</b> is banished and warps away!</span>")
-						M.set_loc(turf)
-					else
-						var/turfs = list()
-						for(var/turf/T in telesci)
-							turfs += T
-						var/turf = pick(turfs)
-						for(var/mob/Q in AIviewers(5, M))
-							boutput(Q, "<span style=\"color:red\"><b>[M]</b> is banished and warps away!</span>")
-						M.set_loc(turf)
-				else if (O)
-					if (fate == 1)
-						var/turfs = list()
-						for(var/turf/T in world)
-							turfs += T
-						var/turf = pick(turfs)
-						for(var/mob/Q in AIviewers(5, O))
-							boutput(Q, "<span style=\"color:red\">The [O] is banished and warps away!</span>")
-						O.set_loc(turf)
-					else
-						var/turfs = list()
-						for(var/turf/T in telesci)
-							turfs += T
-						var/turf = pick(turfs)
-						for(var/mob/Q in AIviewers(5, O))
-							boutput(Q, "<span style=\"color:red\">The [O] is banished and warps away!</span>")
-						O.set_loc(turf)
+			proc/exile(atom/movable/M as mob|obj)
+				if(istype(M, /obj/effects)) //sparks and such don't teleport
+					return
+
+				if (M.anchored && (!istype(M,/obj/machinery/vehicle)) && (!(fateful == 1)))
+					return
+
+				var/turfs = list()
+				for(var/turf/T in (fateful == 1 ? world : telesci))
+					turfs += T
+				var/turf = pick(turfs)
+				M.visible_message("<span style=\"color:red\">[istype(M, /obj) ? "The [M]":"<b>[M]</b>"]is banished and warps away!</span>")
+				M.set_loc(turf)
 
 			reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
-				if (src.fateful == 1)
-					exile(M,null,1)
-				else
-					exile(M,null)
+				src = null
+				exile(M)
 
 			reaction_obj(var/obj/O, var/volume)
-				if (src.fateful == 1)
-					exile(null,O,1)
-				else
-					exile(null,O)
+				src = null
+				exile(O)
 
 			on_mob_life(var/mob/M)
 				..(M)
 				if (prob(1))
-					if (src.fateful == 1)
-						exile(M,null,1)
-					else
-						exile(M,null)
+					exile(M)
 
 			on_add() //shamelessly copied from anima
 				// Marq fix for cannot read null.my_atom
