@@ -2399,7 +2399,7 @@ datum
 				for(var/turf/T in (fateful == 1 ? world : telesci))
 					turfs += T
 				var/turf = pick(turfs)
-				M.visible_message("<span style=\"color:red\">[istype(M, /obj) ? "The [M]":"<b>[M]</b>"]is banished and warps away!</span>")
+				M.visible_message("<span style=\"color:red\">[istype(M, /obj) ? "[M]":"<b>[M]</b>"] is banished and warps away!</span>")
 				M.set_loc(turf)
 
 			reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
