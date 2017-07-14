@@ -2403,11 +2403,9 @@ datum
 				M.set_loc(turf)
 
 			reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
-				src = null
 				exile(M)
 
 			reaction_obj(var/obj/O, var/volume)
-				src = null
 				exile(O)
 
 			on_mob_life(var/mob/M)
