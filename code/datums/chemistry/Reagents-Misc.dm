@@ -1127,7 +1127,7 @@ datum
 
 		hootagen_stable
 			name = "Stable Hootagen"
-			id = "super_hairgrownium"
+			id = "hootagen_stable"
 			description = "HOOT HOOT HOOT HOOT"
 			fluid_r = 100
 			fluid_b = 100
