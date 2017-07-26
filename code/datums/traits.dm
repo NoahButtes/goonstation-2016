@@ -238,6 +238,20 @@
 			owner.bioHolder.AddEffect("accent_tommy")
 		return
 
+/obj/trait/elvis
+	name = "Funky Accent (0) \[Language\]"
+	cleanName = "Funky Accent"
+	desc = "Give a man a banana and he will clown for a day. Teach a man to clown and he will live in a cold dark corner of a space station for the rest of his days. - Elvis, probably."
+	id = "elvis"
+	points = 0
+	isPositive = 1
+	category = "language"
+
+	onAdd(var/mob/owner)
+		if(owner.bioHolder)
+			owner.bioHolder.AddEffect("accent_elvis")
+		return
+
 /obj/trait/addict
 	name = "Addict (+2)"
 	cleanName = "Addict"
