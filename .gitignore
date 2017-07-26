@@ -1,1 +1,16 @@
+
+goonstation.rsc
 goonstation.dyn.rsc
+goonstation.dmb
+data/stats/data.txt
+data/ooc_ban.ban
+data/logs/2017/07-July/14-Friday.log
+data/logs/2017/07-July/12-Wednesday.log
+data/localBans.db
+data/job_full.ban
+data/intra_round.sav
+data/compid_file.sav
+data/AdminPrefs.sav
+data/AntagTokens.sav
+data/iconCache.sav
+goonstation.lk
