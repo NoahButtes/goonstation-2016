@@ -1945,3 +1945,43 @@ datum/pathogeneffects/malevolent/senility
 					M.drop_item()
 					M.take_brain_damage(4)
 
+
+datum/pathogeneffects/malevolent/radiation
+	name = "Radioactive Infection"
+	desc = "Infection irradiates the host's cells."
+	infect_type = INFECT_NONE
+	rarity = RARITY_RARE
+
+	disease_act(var/mob/M as mob, var/datum/pathogen/origin)
+		if (!origin.symptomatic)
+			return
+		switch (origin.stage)
+			if (1 to 3)
+				if (prob(2 * origin.stage + 3))
+					M.irradiate(origin.stage,1)
+					M.show_message("<span style=\"color:red\">You feel sick.</span>")
+			if (4)
+				if (prob(13))
+					M.irradiate(6,1)
+					M.show_message("<span style=\"color:red\">You feel very sick!</span>")
+				else if (prob(26))
+					M.irradiate(3,1)
+					M.show_message("<span style=\"color:red\">You feel sick.</span>")
+			if (5)
+				if (prob(15))
+					M.irradiate(rand(12,20),1)
+					M.show_message("<span style=\"color:red\">You feel extremely sick!!</span>")
+				else if (prob(20))
+					M.irradiate(6,1)
+					M.show_message("<span style=\"color:red\">You feel very sick!</span>")
+				else if (prob(40))
+					M.irradiate(3,1)
+					M.show_message("<span style=\"color:red\">You feel sick.</span>")
+
+
+	may_react_to()
+		return "A curiously shaped gland on the pathogen is emitting an unearthly blue glow." //Cherenkov radiation
+
+	react_to(var/R, var/zoom)
+		if (R == "silver")
+			return "The silver appears to be moderating the reaction within the pathogen's gland." //neutron capture
