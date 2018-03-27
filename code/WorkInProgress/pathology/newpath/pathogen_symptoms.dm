@@ -1945,3 +1945,57 @@ datum/pathogeneffects/malevolent/senility
 					M.drop_item()
 					M.take_brain_damage(4)
 
+
+//Note: this symptom is *relatively* harmless below stage four.
+datum/pathogeneffects/malevolent/immunosuppression
+	name = "Immunosuppression"
+	desc = "The infected individual has a significantly weakened or entirely suppressed immune system, leaving them vulnerable to secondary infection."
+	infect_type = INFECT_NONE
+	rarity = RARITY_VERY_RARE
+	disease_act(var/mob/M as mob, var/datum/pathogen/origin)
+		if (!origin.symptomatic)
+			return
+		var/mob/living/L = M
+		switch (origin.stage)
+			if (1)
+				if (prob(4))
+					L.contract_disease(/datum/ailment/parasite/bee_larva,null,null,1)
+			if (2)
+				if (prob(6))
+					M.show_message("<span style=\"color:red\">You feel a burning sensation in your gut.</span>")
+					M.take_toxin_damage(4)
+					M.updatehealth()
+			if (3)
+				if (prob(8))
+					M.visible_message("[M] clutches their chest in pain!","<span style=\"color:red\">You feel a searing pain in your chest!</span>")
+					M.take_toxin_damage(5)
+					M.stunned += 2
+					M.updatehealth()
+			if (4)
+				if (prob(10))
+					M.visible_message("[M] clutches their chest in pain!","<span style=\"color:red\">You feel a horrible pain in your chest!</span>")
+					M.take_toxin_damage(8)
+					M.stunned += 2
+					M.updatehealth()
+			if (5)
+				if (prob(12) && M.reagents.has_reagent("ethanol"))
+					M.visible_message("[M] falls to the ground, clutching their chest!", "<span style=\"color:red\">The pain overwhelms you!</span>", "<span style=\"color:red\">You hear someone fall.</span>")
+					M.take_toxin_damage(5)
+					M.weakened += 4
+					M.updatehealth()
+
+	may_react_to()
+		return "The pathogen appears to be capable of processing certain beverages."
+
+	react_to(var/R, var/zoom)
+		var/alcoholic = 0
+		if (R == "ethanol")
+			alcoholic = "ethanol"
+		else
+			var/datum/reagents/H = new /datum/reagents(5)
+			H.add_reagent(R, 5)
+			var/RE = H.get_reagent(R)
+			if (istype(RE, /datum/reagent/fooddrink/alcoholic))
+				alcoholic = RE:name
+		if (alcoholic)
+			return "The pathogen appears to react violently to the [alcoholic]."
