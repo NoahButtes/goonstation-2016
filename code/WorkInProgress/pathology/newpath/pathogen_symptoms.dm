@@ -1964,7 +1964,7 @@ datum/pathogeneffects/malevolent/factory
 				if (prob(6))
 					if(prob(50))
 						M.infected(generate_cold_pathogen())
-						M.show_message("<span style=\"color:red\">You feel like you're coming down with something.</span>"
+						M.show_message("<span style=\"color:red\">You feel like you're coming down with something.</span>")
 					else
 						M.infected(generate_indigestion_pathogen())
 						M.show_message("<span style=\"color:red\">Your stomach grumbles uncomfortably.</span>")
@@ -1972,7 +1972,7 @@ datum/pathogeneffects/malevolent/factory
 				if (prob(8))
 					if(prob(50))
 						M.infected(generate_cold_pathogen())
-						M.show_message("<span style=\"color:red\">You feel like you're coming down with something.</span>"
+						M.show_message("<span style=\"color:red\">You feel like you're coming down with something.</span>")
 					else
 						M.infected(generate_flu_pathogen())
 						M.show_message("<span style=\"color:red\">Your muscles are starting to cramp a little bit.</span>")
