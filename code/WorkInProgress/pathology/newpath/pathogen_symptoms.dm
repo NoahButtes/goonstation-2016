@@ -1946,56 +1946,55 @@ datum/pathogeneffects/malevolent/senility
 					M.take_brain_damage(4)
 
 
-//Note: this symptom is *relatively* harmless below stage four.
-datum/pathogeneffects/malevolent/immunosuppression
-	name = "Immunosuppression"
-	desc = "The infected individual has a significantly weakened or entirely suppressed immune system, leaving them vulnerable to secondary infection."
+//Note: this symptom is *relatively* harmless below stage four, but has the potential to snowball after that point
+datum/pathogeneffects/malevolent/factory
+	name = "Microbody Factory-itis"
+	desc = "The infection rapidly manufactures other microbodies within the host's tissue."
 	infect_type = INFECT_NONE
 	rarity = RARITY_VERY_RARE
 	disease_act(var/mob/M as mob, var/datum/pathogen/origin)
 		if (!origin.symptomatic)
 			return
-		var/mob/living/L = M
 		switch (origin.stage)
 			if (1)
 				if (prob(4))
-					L.contract_disease(/datum/ailment/parasite/bee_larva,null,null,1)
+					M.infected(generate_indigestion_pathogen())
+					M.show_message("<span style=\"color:red\">Your stomach grumbles uncomfortably.</span>")
 			if (2)
 				if (prob(6))
-					M.show_message("<span style=\"color:red\">You feel a burning sensation in your gut.</span>")
-					M.take_toxin_damage(4)
-					M.updatehealth()
+					if(prob(50))
+						M.infected(generate_cold_pathogen())
+						M.show_message("<span style=\"color:red\">You feel like you're coming down with something.</span>"
+					else
+						M.infected(generate_indigestion_pathogen())
+						M.show_message("<span style=\"color:red\">Your stomach grumbles uncomfortably.</span>")
 			if (3)
 				if (prob(8))
-					M.visible_message("[M] clutches their chest in pain!","<span style=\"color:red\">You feel a searing pain in your chest!</span>")
-					M.take_toxin_damage(5)
-					M.stunned += 2
-					M.updatehealth()
+					if(prob(50))
+						M.infected(generate_cold_pathogen())
+						M.show_message("<span style=\"color:red\">You feel like you're coming down with something.</span>"
+					else
+						M.infected(generate_flu_pathogen())
+						M.show_message("<span style=\"color:red\">Your muscles are starting to cramp a little bit.</span>")
 			if (4)
 				if (prob(10))
-					M.visible_message("[M] clutches their chest in pain!","<span style=\"color:red\">You feel a horrible pain in your chest!</span>")
-					M.take_toxin_damage(8)
-					M.stunned += 2
-					M.updatehealth()
+					if(prob(50))
+						M.infected(generate_flu_pathogen())
+						M.show_message("<span style=\"color:red\">Your muscles are starting to cramp a little bit.</span>")
+					else
+						M.infected(generate_random_pathogen())
+						M.show_message("<span style=\"color:red\">You feel ill, but in a new and strange way.</span>")
 			if (5)
-				if (prob(12) && M.reagents.has_reagent("ethanol"))
-					M.visible_message("[M] falls to the ground, clutching their chest!", "<span style=\"color:red\">The pain overwhelms you!</span>", "<span style=\"color:red\">You hear someone fall.</span>")
-					M.take_toxin_damage(5)
-					M.weakened += 4
-					M.updatehealth()
-
+				if (prob(12))
+					var/datum/pathogen/P = unpool(/datum/pathogen)
+					P.setup(1, null, 0)
+					if(prob(20))
+						P.generate_strong_effect()
+						M.show_message("<span style=\"color:red\">You feel ill, but in a new and frighteningly strange way!</span>")
+						M.infected(P)
+					else
+						M.infected(P)
+						M.show_message("<span style=\"color:red\">You feel ill, but in a new and strange way.</span>")
+						
 	may_react_to()
-		return "The pathogen appears to be capable of processing certain beverages."
-
-	react_to(var/R, var/zoom)
-		var/alcoholic = 0
-		if (R == "ethanol")
-			alcoholic = "ethanol"
-		else
-			var/datum/reagents/H = new /datum/reagents(5)
-			H.add_reagent(R, 5)
-			var/RE = H.get_reagent(R)
-			if (istype(RE, /datum/reagent/fooddrink/alcoholic))
-				alcoholic = RE:name
-		if (alcoholic)
-			return "The pathogen appears to react violently to the [alcoholic]."
+		return "The pathogen appears to be constructing and replicating entirely distinct microbodies!"
