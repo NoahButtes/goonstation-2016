@@ -179,3 +179,23 @@ datum/pathogeneffects/benevolent/oxygenproduction
 		if (M.get_oxygen_deprivation())
 			M.take_oxygen_deprivation(0 - origin.stage)
 			M.updatehealth()
+
+datum/pathogeneffects/benevolent/reagentproducer
+	name = "Reagent Producer"
+	rarity = RARITY_ABSTRACT
+	var/chem_id = "juice_pickle"
+	
+	disease_act(var/mob/M as mob, var/datum/pathogen/origin)
+		if (!origin.symptomatic)
+			return
+		if (prob(origin.stage * 20))
+			M.reagents.add_reagent(chem_id, rand(1,origin.stage))
+			
+	may_react_to()
+		var/datum/reagents/N = new /datum/reagents(5)
+		N.add_reagent(chem_id, 5)
+		var/temp_chem = N.get_reagent(chem_id)
+		var/chem_name = temp_chem:name
+		return "The pathogen appears to produce large quantities of ... [chem_name]?."
+		
+		
