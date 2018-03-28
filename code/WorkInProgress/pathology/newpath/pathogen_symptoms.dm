@@ -1957,7 +1957,7 @@ datum/pathogeneffects/malevolent/junglefever
 	disease_act(var/mob/M as mob, var/datum/pathogen/origin)
 		if (!origin.symptomatic)
 			return
-		if ((ismonkey(target) || target.bioHolder && target.bioHolder.HasEffect("monkey"))) //stop once we convert to being a monkey
+		if ((ismonkey(M) || M.bioHolder && M.bioHolder.HasEffect("monkey"))) //stop once we convert to being a monkey
 			return
 		switch (origin.stage)
 			if (1 to 3)
@@ -1975,7 +1975,7 @@ datum/pathogeneffects/malevolent/junglefever
 					else if (prob((origin.stage-3)*15))
 						M.show_message("<span style=\"color:red\">You feel [pick("exceptionally ", "mind-numbingly ", "unbearably ")] itchy!</span>")
 						M.reagents.add_reagent("histamine", 20)
-				if (prob((origin.stage-4)*2) && !(ismonkey(target) || target.bioHolder && target.bioHolder.HasEffect("monkey")))
+				if (prob((origin.stage-4)*2) && !(ismonkey(M) || M.bioHolder && M.bioHolder.HasEffect("monkey")))
 					logTheThing("pathology", usr, null, "was monkeyized by symptom [src].")
 					M:monkeyize()
 
