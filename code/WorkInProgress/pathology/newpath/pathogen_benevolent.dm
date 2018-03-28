@@ -233,6 +233,11 @@ datum/pathogeneffects/benevolent/reagentproducer/rajaijah
 	rarity = RARITY_VERY_RARE
 	chem_id = "madness_toxin"
 
+datum/pathogeneffects/benevolent/reagentproducer/love
+	name = "Pure Love Producer"
+	rarity = RARITY_VERY_RARE
+	chem_id = "love"
+
 datum/pathogeneffects/benevolent/reagentproducer/synaptizine
 	name = "Synaptizine Producer"
 	rarity = RARITY_RARE
