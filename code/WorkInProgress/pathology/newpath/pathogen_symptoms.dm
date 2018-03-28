@@ -1945,3 +1945,62 @@ datum/pathogeneffects/malevolent/senility
 					M.drop_item()
 					M.take_brain_damage(4)
 
+
+datum/pathogeneffects/malevolent/junglefever
+	name = "Jungle Fever"
+	desc = "The infected feels itchy and begins to crave bananas. They also might eventually turn into a monkey."
+	infect_type = INFECT_TOUCH
+	infection_coefficient = 0.4
+	rarity = RARITY_VERY_RARE
+	spread = SPREAD_HANDS | SPREAD_BODY
+
+	disease_act(var/mob/M as mob, var/datum/pathogen/origin)
+		if (!origin.symptomatic)
+			return
+		switch (origin.stage)
+			if (1 to 3)
+				if (prob(origin.stage * 4))
+					M.show_message("<span style=\"color:red\">You feel [pick("a little ", "a bit ", "rather ", "")] itchy.</span>")
+				if (prob(origin.stage - 1))
+					M.show_message("<span style=\"color:red\">You could really go for a banana right now!</span>")
+			if (4)
+				if (prob(50))
+					create_icing(M)
+				if (prob(13))
+					if (prob(15) && isturf(M.loc))
+						M:burning = 0
+						M.show_message("<span style=\"color:red\">You spontaneously freeze!</span>")
+						M.bodytemperature -= 30
+						new /obj/icecube(get_turf(M), M)
+					else
+						M.bodytemperature -= 30
+						M.show_message("<span style=\"color:red\">You pretty damn cold.</span>")
+						M.stunned += 1
+						M.emote("shiver")
+
+			if (5)
+				if (prob(50))
+					create_icing(M)
+				if (prob(15))
+					if (prob(25) && isturf(M.loc))
+						M:burning = 0
+						M.show_message("<span style=\"color:red\">You spontaneously freeze!</span>")
+						M.bodytemperature -= 30
+						new /obj/icecube(get_turf(M), M)
+					else
+						M.bodytemperature -= 50
+						M.show_message("<span style=\"color:red\">[pick("You're freezing!", "You're getting cold...", "So very cold...", "You feel your skin turning into ice...")]</span>")
+						M.stunned += 3
+						M.emote("shiver")
+				if (prob(1) && !(ismonkey(target) || target.bioHolder && target.bioHolder.HasEffect("monkey")))
+					logTheThing("pathology", usr, null, "was monkeyized by symptom [src].")
+					M:monkeyize()
+		if (M.bodytemperature < 0)
+			M.bodytemperature = 0
+
+	may_react_to()
+		return "The pathogen is producing a trail of ice. Perhaps something hot might affect it."
+
+	react_to(var/R, var/zoom)
+		if (R == "napalm" || R == "infernite")
+			return "The hot reagent doesn't affect the trail of ice at all!"
