@@ -197,5 +197,43 @@ datum/pathogeneffects/benevolent/reagentproducer
 		var/temp_chem = N.get_reagent(chem_id)
 		var/chem_name = temp_chem:name
 		return "The pathogen appears to produce large quantities of ... [chem_name]?."
-		
-		
+
+datum/pathogeneffects/benevolent/reagentproducer/dilutedfliptonium
+	name = "Diluted Fliptonium Producer"
+	rarity = RARITY_UNCOMMON
+	chem_id = "diluted_fliptonium"
+
+datum/pathogeneffects/benevolent/reagentproducer/itchingpowder
+	name = "Itching Powder Producer"
+	rarity = RARITY_UNCOMMON
+	chem_id = "itching"
+
+datum/pathogeneffects/benevolent/reagentproducer/glitter
+	name = "Glitter Producer"
+	rarity = RARITY_UNCOMMON
+	chem_id = "glitter" //the itchy kind
+
+datum/pathogeneffects/benevolent/reagentproducer/swedium
+	name = "Swedium Producer"
+	rarity = RARITY_UNCOMMON
+	chem_id = "swedium"
+
+datum/pathogeneffects/benevolent/reagentproducer/elvis
+	name = "Essence of Elvis Producer"
+	rarity = RARITY_UNCOMMON
+	chem_id = "essenceofelvis"
+
+datum/pathogeneffects/benevolent/reagentproducer/reversium
+	name = "Reversium Producer"
+	rarity = RARITY_RARE
+	chem_id = "reversium"
+
+datum/pathogeneffects/benevolent/reagentproducer/rajaijah
+	name = "Rajaijah Producer"
+	rarity = RARITY_VERY_RARE
+	chem_id = "madness_toxin"
+
+datum/pathogeneffects/benevolent/reagentproducer/synaptizine
+	name = "Synaptizine Producer"
+	rarity = RARITY_RARE
+	chem_id = "synaptizine"
