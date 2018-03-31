@@ -1945,3 +1945,34 @@ datum/pathogeneffects/malevolent/senility
 					M.drop_item()
 					M.take_brain_damage(4)
 
+datum/pathogeneffects/malevolent/snaps
+	name = "Snaps"
+	desc = "The infection forces its host's fingers to occasionally snap."
+	infect_type = INFECT_AREA
+	spread = SPREAD_AIR
+	infect_message = "<span style=\"color:red\">That's a pretty catchy groove...</span>" //you might even say it's infectious
+	rarity = RARITY_VERY_COMMON
+
+	proc/snap(var/mob/M, var/datum/pathogen/origin)
+		M.emote("snap")
+		infect(M, origin)
+
+	disease_act(var/mob/M, var/datum/pathogen/origin)
+		if (!origin.symptomatic)
+			return
+		if (prob(origin.stage * 3))
+			snap(M, origin)
+
+	may_react_to()
+		return "The pathogen seems like it might respond to strong sonic impulses."
+		
+	react_to(var/R, var/zoom)
+		if (R == "sonicpowder")
+			if (zoom)
+				return "The individual microbodies appear to be forming a very simplistic rhythm with their explosive snaps."
+			else
+				return "The pathogen appears to be using the powder granules as microscopic musical instruments."
+				
+
+//TODO: ADD jazzy snaps and wild, finger-breaking, limb-ripping freeform snaps
+
