@@ -1951,7 +1951,7 @@ datum/pathogeneffects/malevolent/snaps
 	infect_type = INFECT_AREA
 	spread = SPREAD_AIR
 	infect_message = "<span style=\"color:red\">That's a pretty catchy groove...</span>" //you might even say it's infectious
-	rarity = RARITY_VERY_COMMON
+	rarity = RARITY_COMMON
 
 	proc/snap(var/mob/M, var/datum/pathogen/origin)
 		M.emote("snap")
@@ -1973,6 +1973,58 @@ datum/pathogeneffects/malevolent/snaps
 			else
 				return "The pathogen appears to be using the powder granules as microscopic musical instruments."
 				
+datum/pathogeneffects/malevolent/snaps/jazz
+	name = "Jazz Snaps"
+	desc = "The infection forces its host to slowly transform into a finger-snapping jazz musician."
+	rarity = RARITY_UNCOMMON
+	
+	proc/jazz(var/mob/living/carbon/human/H as mob)
+		H.show_message("<span style=\"color:blue\">[pick("You feel cooler!", "You feel smoother!", "You feel chill!", "You can feel your musical talent skyrocketing!")]</span>")
+		if (!(H.wear_mask && istype(H.wear_mask, /obj/item/clothing/mask/moustache)))
+			for (var/obj/item/clothing/O in H)
+				if (istype(O,/obj/item/clothing/mask))
+					H.u_equip(O)
+					if (O)
+						O.set_loc(H.loc)
+						O.dropped(H)
+						O.layer = initial(O.layer)
+
+			var/obj/item/clothing/mask/moustache/moustache = new /obj/item/clothing/mask/moustache(H)
+			H.equip_if_possible(moustache, H.slot_wear_mask)
+			H.set_clothing_icon_dirty()
+
+	proc/snap(var/mob/M, var/datum/pathogen/origin)
+		..()
+		if (istype(M, /mob/living/carbon/human))
+			if (!(M:glasses) || !(istype(M:glasses, /obj/item/clothing/glasses/sunglasses)))
+				if (prob(origin.stage * 5))
+			
+
+	disease_act(var/mob/M, var/datum/pathogen/origin)
+		if (!origin.symptomatic)
+			return
+		if (prob(origin.stage * 3))
+			snap(M, origin)
+
+	may_react_to()
+		return "The pathogen seems like it might respond to strong sonic impulses."
+		
+	react_to(var/R, var/zoom)
+		if (R == "sonicpowder")
+			if (zoom)
+				return "The individual microbodies appear to be forming a very simplistic rhythm with their explosive snaps."
+			else
+				return "The pathogen appears to be using the powder granules to make microscopic... saxophones???"
+
+
 
 //TODO: ADD jazzy snaps and wild, finger-breaking, limb-ripping freeform snaps
+
+
+
+
+
+
+
+
 
