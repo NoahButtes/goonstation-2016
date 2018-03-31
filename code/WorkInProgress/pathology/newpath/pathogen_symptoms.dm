@@ -1979,7 +1979,7 @@ datum/pathogeneffects/malevolent/snaps/jazz
 	rarity = RARITY_UNCOMMON
 	
 	proc/jazz(var/mob/living/carbon/human/H as mob)
-		H.show_message("<span style=\"color:blue\">[pick("You feel cooler!", "You feel smoother!", "You feel chill!", "You can feel your musical talent skyrocketing!")]</span>")
+		H.show_message("<span style=\"color:blue\">[pick("You feel cooler!", "You feel smooth and laid-back!", "You feel jazzy!", "A sudden soulfulness fills your spirit!")]</span>")
 		if (!(H.wear_mask && istype(H.wear_mask, /obj/item/clothing/mask/moustache)))
 			for (var/obj/item/clothing/O in H)
 				if (istype(O,/obj/item/clothing/mask))
@@ -1993,7 +1993,7 @@ datum/pathogeneffects/malevolent/snaps/jazz
 			H.equip_if_possible(moustache, H.slot_wear_mask)
 			H.set_clothing_icon_dirty()
 
-	proc/snap(var/mob/M, var/datum/pathogen/origin)
+	snap(var/mob/M, var/datum/pathogen/origin)
 		..()
 		if (istype(M, /mob/living/carbon/human))
 			if (!(M:glasses) || !(istype(M:glasses, /obj/item/clothing/glasses/sunglasses)))
@@ -2003,8 +2003,14 @@ datum/pathogeneffects/malevolent/snaps/jazz
 	disease_act(var/mob/M, var/datum/pathogen/origin)
 		if (!origin.symptomatic)
 			return
+		switch(origin.stage)
+			if (1 to 2)
+				snap(M, origin)
+			if (1
 		if (prob(origin.stage * 3))
 			snap(M, origin)
+			if origin.stage
+			if(ishuman(M) && prob(origin.stage
 
 	may_react_to()
 		return "The pathogen seems like it might respond to strong sonic impulses."
@@ -2012,13 +2018,64 @@ datum/pathogeneffects/malevolent/snaps/jazz
 	react_to(var/R, var/zoom)
 		if (R == "sonicpowder")
 			if (zoom)
-				return "The individual microbodies appear to be forming a very simplistic rhythm with their explosive snaps."
+				return "The individual microbodies appear to be playing smooth jazz."
 			else
 				return "The pathogen appears to be using the powder granules to make microscopic... saxophones???"
 
+datum/pathogeneffects/malevolent/snaps/wild
+	name = "Wild Snaps"
+	desc = "The infection forces its host's fingers to constantly and painfully snap. Highly contagious."
+	rarity = RARITY_VERY_RARE
+	
+	
+	proc/snap_arm(var/mob/M, var/datum/pathogen/origin)
+		if (!origin.symptomatic)
+			return
+		else if(ishuman(M))
+			var/mob/living/carbon/human/H = M
+			
+			var/list/possible_limbs = list()
+			
+			if (H.limbs.l_arm)
+				possible_limbs += H.limbs.l_arm
+			if (H.limbs.r_arm)
+				possible_limbs += H.limbs.r_arm
+				
+			if (possible_limbs.len)
+				var/obj/item/parts/P = pick(possible_limbs)
+				H.visible_message("<span style=\"color:red\">[H] violently swings /his [P] to provide the necessary energy for producing a thunderously loud finger snap!</span>", "<span style=\"color:red\">You violently swing your [P] to provide the necessary energy for producing a thunderously loud finger snap!</span>")
+				playsound(H.loc, H.sound_snap, 200, 1, 5910) //5910 is approximately the same extra range from which you could hear a max-power artifact bomb
+				playsound(H.loc, "explosion", 200, 1, 5910)
+				P.sever()
 
+	snap(var/mob/M, var/datum/pathogen/origin)
+		if(prob(origin.stage-3))
+			infect(M, origin)
+			snap_arm(M, origin)
+			return
+		else
+			var/s = rand(origin.stage,(origin.stage)*(origin.stage)) //minimum of origin.stage, maximum of origin.stage squared
+			for(var/i = 1, i <= s, i++)
+				M.emote("snap")
+				infect(M, origin)
 
-//TODO: ADD jazzy snaps and wild, finger-breaking, limb-ripping freeform snaps
+	disease_act(var/mob/M, var/datum/pathogen/origin)
+		if (!origin.symptomatic)
+			return
+		if (prob(origin.stage * 3))
+			snap(M, origin)
+			
+	may_react_to()
+		return "The pathogen seems like it might respond to strong sonic impulses."
+		
+	react_to(var/R, var/zoom)
+		if (R == "sonicpowder")
+			if (zoom)
+				return "The individual microbodies appear to be playing some form of freeform jazz. They are clearly off-key."
+			else
+				return "The pathogen appears to be using the powder granules to make microscopic... saxophones???"
+
+//TODO: FINISH JAZZY SNAPS, BUGCHECK WILDSNAPS
 
 
 
