@@ -1975,11 +1975,15 @@ datum/pathogeneffects/malevolent/snaps
 				
 datum/pathogeneffects/malevolent/snaps/jazz
 	name = "Jazz Snaps"
-	desc = "The infection forces its host to slowly transform into a finger-snapping jazz musician."
+	desc = "The infection forces its host's fingers to occasionally snap. Also, it transforms the host into a jazz musician."
 	rarity = RARITY_UNCOMMON
 	
 	proc/jazz(var/mob/living/carbon/human/H as mob)
 		H.show_message("<span style=\"color:blue\">[pick("You feel cooler!", "You feel smooth and laid-back!", "You feel jazzy!", "A sudden soulfulness fills your spirit!")]</span>")
+		H.u_equip(H.w_uniform) //TODO: turtleneck
+		H.u_equip(H.shoes)
+		H.drop_from_slot(H.wear_mask)
+		H.drop_from_slot(H.gloves)
 		if (!(H.wear_mask && istype(H.wear_mask, /obj/item/clothing/mask/moustache)))
 			for (var/obj/item/clothing/O in H)
 				if (istype(O,/obj/item/clothing/mask))
