@@ -1990,7 +1990,7 @@ datum/pathogeneffects/malevolent/snaps/jazz
 			var/obj/item/clothing/head/flatcap/F = new /obj/item/clothing/head/flatcap(H)
 			if (H.head)
 				H.u_equip(H.head)
-			H.equip_if_possible(F, H.head)
+			H.equip_if_possible(F, H.slot_head)
 			
 		if (H.find_in_hands(/obj/item/saxophone) == null)
 			var/obj/item/saxophone/D = new /obj/item/saxophone(H)
