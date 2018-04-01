@@ -2024,7 +2024,8 @@ datum/pathogeneffects/malevolent/snaps/jazz
 				if (4 to 5)
 					snap(M, origin)
 					snap(M, origin)
-					if (prob(origin.stage - 3))
+					if (prob((origin.stage - 3)*3))
+						snap(M, origin)
 						if (ishuman(M))
 							var/mob/living/carbon/human/H = M
 							jazz(H)
@@ -2064,9 +2065,10 @@ datum/pathogeneffects/malevolent/snaps/wild
 				playsound(H.loc, H.sound_snap, 200, 1, 5910) //5910 is approximately the same extra range from which you could hear a max-power artifact bomb
 				playsound(H.loc, "explosion", 200, 1, 5910)
 				P.sever()
+				random_brute_damage(H, 40) //makes it equivalent to damage from 2 excessive fingersnap triggers
 
 	snap(var/mob/M, var/datum/pathogen/origin)
-		if(prob((origin.stage-3)*4))
+		if(prob((origin.stage-3)*3))
 			snap_arm(M, origin)
 			infect(M, origin)
 			return
