@@ -2066,9 +2066,9 @@ datum/pathogeneffects/malevolent/snaps/wild
 				P.sever()
 
 	snap(var/mob/M, var/datum/pathogen/origin)
-		if(prob(origin.stage-3))
-			infect(M, origin)
+		if(prob((origin.stage-3)*4))
 			snap_arm(M, origin)
+			infect(M, origin)
 			return
 		else
 			var/s = rand(origin.stage,(origin.stage)*(origin.stage)) //minimum of origin.stage, maximum of origin.stage squared
