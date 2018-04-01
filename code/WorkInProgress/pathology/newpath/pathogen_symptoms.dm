@@ -2093,5 +2093,3 @@ datum/pathogeneffects/malevolent/snaps/wild
 				return "The individual microbodies appear to be playing some form of freeform jazz. They are clearly off-key."
 			else
 				return "The pathogen appears to be using the powder granules to make microscopic... saxophones???"
-
-//TODO: BUGCHECK EVERYTHIIIIIING
