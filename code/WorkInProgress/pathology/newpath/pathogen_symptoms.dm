@@ -1976,46 +1976,59 @@ datum/pathogeneffects/malevolent/snaps
 datum/pathogeneffects/malevolent/snaps/jazz
 	name = "Jazz Snaps"
 	desc = "The infection forces its host's fingers to occasionally snap. Also, it transforms the host into a jazz musician."
-	rarity = RARITY_UNCOMMON
+	rarity = RARITY_RARE
 	
 	proc/jazz(var/mob/living/carbon/human/H as mob)
 		H.show_message("<span style=\"color:blue\">[pick("You feel cooler!", "You feel smooth and laid-back!", "You feel jazzy!", "A sudden soulfulness fills your spirit!")]</span>")
-		H.u_equip(H.w_uniform) //TODO: turtleneck
-		H.u_equip(H.shoes)
-		H.drop_from_slot(H.wear_mask)
-		H.drop_from_slot(H.gloves)
-		if (!(H.wear_mask && istype(H.wear_mask, /obj/item/clothing/mask/moustache)))
-			for (var/obj/item/clothing/O in H)
-				if (istype(O,/obj/item/clothing/mask))
-					H.u_equip(O)
-					if (O)
-						O.set_loc(H.loc)
-						O.dropped(H)
-						O.layer = initial(O.layer)
-
-			var/obj/item/clothing/mask/moustache/moustache = new /obj/item/clothing/mask/moustache(H)
-			H.equip_if_possible(moustache, H.slot_wear_mask)
-			H.set_clothing_icon_dirty()
+		if (!(H.w_uniform && istype(H.w_uniform, /obj/item/clothing/under/misc/syndicate)))
+			var/obj/item/clothing/under/misc/syndicate/T = new /obj/item/clothing/under/misc/syndicate(H)
+			T.name = "Jazzy Turtleneck"
+			if (H.w_uniform)
+				H.u_equip(H.w_uniform)
+			H.equip_if_possible(T, H.slot_w_uniform)
+		if (!(H.head && istype(H.head, /obj/item/clothing/head/flatcap)))
+			var/obj/item/clothing/head/flatcap/F = new /obj/item/clothing/head/flatcap(H)
+			if (H.head)
+				H.u_equip(H.head)
+			H.equip_if_possible(F, H.head)
+			
+		if (H.find_in_hands(/obj/item/saxophone) == null)
+			var/obj/item/saxophone/D = new /obj/item/saxophone(H)
+			if(!(H.put_in_hand(D) == 1))
+				var/drophand = (H.hand == 0 ? H.slot_r_hand : H.slot_l_hand) //basically works like a derringer
+				H.drop_item()
+				D.set_loc(H)
+				H.equip_if_possible(D, drophand)
+		H.set_clothing_icon_dirty()
 
 	snap(var/mob/M, var/datum/pathogen/origin)
 		..()
-		if (istype(M, /mob/living/carbon/human))
-			if (!(M:glasses) || !(istype(M:glasses, /obj/item/clothing/glasses/sunglasses)))
-				if (prob(origin.stage * 5))
+		if (ishuman(M))
+			var/mob/living/carbon/human/H = M
+			if (H.find_in_hands(/obj/item/saxophone)) //bonus saxophone playing capability that doesn't count toward sax cooldown
+				var/obj/item/saxophone/sax = H.find_in_hands(/obj/item/saxophone)
+				var/list/aud = sax.sounds_sax
+				playsound(get_turf(H), pick(aud), 50, 1)
 			
-
 	disease_act(var/mob/M, var/datum/pathogen/origin)
 		if (!origin.symptomatic)
 			return
-		switch(origin.stage)
-			if (1 to 2)
-				snap(M, origin)
-			if (1
-		if (prob(origin.stage * 3))
-			snap(M, origin)
-			if origin.stage
-			if(ishuman(M) && prob(origin.stage
-
+		if(prob(origin.stage*5))
+			switch(origin.stage)
+				if (1 to 2)
+					snap(M, origin)
+				if (3)
+					snap(M, origin)
+					if (prob(50)
+						snap(M, origin)
+				if (4 to 5)
+					snap(M, origin)
+					snap(M, origin)
+					if (prob(origin.stage - 3))
+						if (ishuman(M))
+							var/mob/living/carbon/human/H = M
+							jazz(H)
+							
 	may_react_to()
 		return "The pathogen seems like it might respond to strong sonic impulses."
 		
@@ -2066,7 +2079,7 @@ datum/pathogeneffects/malevolent/snaps/wild
 	disease_act(var/mob/M, var/datum/pathogen/origin)
 		if (!origin.symptomatic)
 			return
-		if (prob(origin.stage * 3))
+		if (prob((origin.stage * origin.stage)+5))
 			snap(M, origin)
 			
 	may_react_to()
@@ -2079,13 +2092,4 @@ datum/pathogeneffects/malevolent/snaps/wild
 			else
 				return "The pathogen appears to be using the powder granules to make microscopic... saxophones???"
 
-//TODO: FINISH JAZZY SNAPS, BUGCHECK WILDSNAPS
-
-
-
-
-
-
-
-
-
+//TODO: BUGCHECK EVERYTHIIIIIING
