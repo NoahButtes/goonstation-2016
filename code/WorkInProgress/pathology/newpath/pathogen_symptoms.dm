@@ -2019,7 +2019,7 @@ datum/pathogeneffects/malevolent/snaps/jazz
 					snap(M, origin)
 				if (3)
 					snap(M, origin)
-					if (prob(50)
+					if (prob(50))
 						snap(M, origin)
 				if (4 to 5)
 					snap(M, origin)
