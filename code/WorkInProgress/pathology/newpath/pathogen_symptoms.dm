@@ -2059,8 +2059,8 @@ datum/pathogeneffects/malevolent/snaps/wild
 				possible_limbs += H.limbs.r_arm
 				
 			if (possible_limbs.len)
-				var/obj/item/parts/P = pick(possible_limbs)
-				H.visible_message("<span style=\"color:red\">[H] violently swings /his [P] to provide the necessary energy for producing a thunderously loud finger snap!</span>", "<span style=\"color:red\">You violently swing your [P] to provide the necessary energy for producing a thunderously loud finger snap!</span>")
+				var/obj/item/parts/P = pick(possible_limbs)					
+				H.visible_message("<span style=\"color:red\">[H.name] violently swings [his_or_her(H)] [initial(P.name)] to provide the necessary energy for producing a thunderously loud finger snap!</span>", "<span style=\"color:red\">You violently swing your [initial(P.name)] to provide the necessary energy for producing a thunderously loud finger snap!</span>")
 				playsound(H.loc, H.sound_snap, 200, 1, 5910) //5910 is approximately the same extra range from which you could hear a max-power artifact bomb
 				playsound(H.loc, "explosion", 200, 1, 5910)
 				P.sever()
