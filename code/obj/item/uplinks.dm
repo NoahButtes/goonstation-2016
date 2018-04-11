@@ -582,6 +582,7 @@ Note: Add new traitor items to syndicate_buylist.dm, not here.
 		src.spells += new /datum/SWFuplinkspell/soulguard(src)
 		src.spells += new /datum/SWFuplinkspell/staffofcthulhu(src)
 		src.spells += new /datum/SWFuplinkspell/fireball(src)
+		src.spells += new /datum/SWFuplinkspell/prismatic_spray(src)
 		src.spells += new /datum/SWFuplinkspell/shockingtouch(src)
 		src.spells += new /datum/SWFuplinkspell/iceburst(src)
 		src.spells += new /datum/SWFuplinkspell/blind(src)
@@ -671,6 +672,13 @@ Note: Add new traitor items to syndicate_buylist.dm, not here.
 	desc = "This spell allows you to fling a fireball at a nearby target of your choice. The fireball will explode, knocking down and burning anyone too close, including you."
 	cooldown = 20
 	assoc_spell = /datum/targetable/spell/fireball
+
+/datum/SWFuplinkspell/prismatic_spray
+	name = "Prismatic Spray"
+	eqtype = "Offensive"
+	desc = "This spell allows you to launch a spray of colorful and wildly innaccurate projectiles outwards in a cone aimed roughly at a nearby target."
+	cooldown = 20
+	assoc_spell = /datum/targetable/spell/prismatic_spray
 /*
 /datum/SWFuplinkspell/shockinggrasp
 	name = "Shocking Grasp"
