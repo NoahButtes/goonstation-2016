@@ -57,7 +57,6 @@
 			else
 				for(var/i=0, i<num_projectiles, i++)
 					var/turf/S = get_turf(O)
-					ps_proj.randomise()
 					if (get_turf(target) == S)
 						var/obj/projectile/P = shoot_projectile_XY(S, pick(proj_types), cos(rand(0,360)), sin(rand(0,360)))
 						if (P)
