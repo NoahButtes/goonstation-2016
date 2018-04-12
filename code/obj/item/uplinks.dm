@@ -677,7 +677,7 @@ Note: Add new traitor items to syndicate_buylist.dm, not here.
 	name = "Prismatic Spray"
 	eqtype = "Offensive"
 	desc = "This spell allows you to launch a spray of colorful and wildly innaccurate projectiles outwards in a cone aimed roughly at a nearby target."
-	cooldown = 20
+	cooldown = 25
 	assoc_spell = /datum/targetable/spell/prismatic_spray
 /*
 /datum/SWFuplinkspell/shockinggrasp

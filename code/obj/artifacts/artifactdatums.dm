@@ -176,20 +176,6 @@
 
 //for use with the wizard spell prismatic_spray
 /datum/projectile/artifact/prismatic_projectile
-	name = "energy bolt"
-	icon = 'icons/obj/projectiles.dmi'
-	icon_state = "u_laser"
-	power = 75
-	cost = 25
-	dissipation_rate = 0
-	dissipation_delay = 50
-	ks_ratio = 1.0
-	sname = "energy bolt"
-	shot_sound = 'sound/weapons/Taser.ogg'
-	shot_number = 1
-	damage_type = D_PIERCING
-	hit_ground_chance = 90
-	window_pass = 0
 
 	New()
 		..()
