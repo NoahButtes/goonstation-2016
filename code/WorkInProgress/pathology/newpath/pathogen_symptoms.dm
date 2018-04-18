@@ -1949,7 +1949,7 @@ datum/pathogeneffects/malevolent/snaps
 	name = "Snaps"
 	desc = "The infection forces its host's fingers to occasionally snap."
 	infect_type = INFECT_AREA
-	spread = SPREAD_AIR
+	spread = SPREAD_FACE | SPREAD_HANDS | SPREAD_AIR | SPREAD_BODY
 	infect_message = "<span style=\"color:red\">That's a pretty catchy groove...</span>" //you might even say it's infectious
 	rarity = RARITY_COMMON
 
