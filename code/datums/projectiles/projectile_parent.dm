@@ -107,7 +107,22 @@
 			return
 
 		// Unified check instead of a separate one in every mob type's bullet_act() (Convair880).
+		// Added wizard/chaplain spell immunity check (Powmonkey/Noah Buttes)
 		if (ismob(A))
+			if(proj_data.is_wizardly != 0)
+				var/mob/M = A
+				if (ishuman(M))
+					var/mob/living/carbon/human/H = M
+					if (H.bioHolder.HasEffect("training_chaplain"))
+						H.visible_message("<span style=\"color:red\">Divine power shields [H] from the impact of the [src.name]!</span>")
+						playsound(H.loc, "sound/effects/bamf.ogg", 25, 1, -1)
+						die()
+						return
+					if (iswizard(H) && H.wizard_spellpower())
+						H.visible_message("<span style=\"color:red\">The [src.name] poofs into harmless smoke as it strikes [H]!</span>")
+						playsound(H.loc, "sound/effects/bamf.ogg", 25, 1, -1)
+						die()
+						return
 			for (var/obj/item/cloaking_device/S in A.contents)
 				if (S.active)
 					S.deactivate(A)
@@ -417,6 +432,9 @@ datum/projectile
 
 	// Self-explanatory.
 	var/hits_ghosts = 0
+
+	//Should chaplains be immune to this type of projectile?
+	var/is_wizardly = 0
 
 	proc
 		hit_ground()
