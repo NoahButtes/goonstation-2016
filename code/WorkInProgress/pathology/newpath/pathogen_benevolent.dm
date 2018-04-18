@@ -179,3 +179,30 @@ datum/pathogeneffects/benevolent/oxygenproduction
 		if (M.get_oxygen_deprivation())
 			M.take_oxygen_deprivation(0 - origin.stage)
 			M.updatehealth()
+
+datum/pathogeneffects/benevolent/bloodgrowth
+	name = "Blood Production - Safe"
+	desc = "Blood regeneration, up to a safe limit of 500 units. Very strong effect at high stages"
+	rarity = RARITY_RARE
+	var/safe_limit = 500 //max amount of blood in a person
+
+	disease_act(var/mob/M as mob, var/datum/pathogen/origin)
+		if (!origin.symptomatic)
+			return
+		if (blood_system && ishuman(M) && prob(origin.stage * 20))
+			var/mob/living/carbon/human/H = M
+			var/bt = H.blood_volume
+			var/blood_lost = safe_limit - bt
+			if (bt < safe_limit)
+				if (blood_lost > origin.stage) //we increment by the origin stage.
+					H.blood_volume += origin.stage
+				else //just set it to the safe_limit
+					H.blood_volume += blood_lost
+		M.updatehealth()
+
+	react_to(var/R, var/zoom)
+		if (R)
+			return "The pathogen appears to be repurposing the reagent into makeshift oxygen-transport proteins."
+
+	may_react_to()
+		return "The pathogenic bodies look bizarrely similar to mammalian erythrocytes."

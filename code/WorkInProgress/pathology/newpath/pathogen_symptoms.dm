@@ -1945,3 +1945,25 @@ datum/pathogeneffects/malevolent/senility
 					M.drop_item()
 					M.take_brain_damage(4)
 
+datum/pathogeneffects/malevolent/bloodgrowthplus
+	name = "Blood Production - Dangerous"
+	desc = "Blood regeneration without any limit! Very fast at high stages!"
+	rarity = RARITY_RARE
+	infect_type = INFECT_NONE
+
+	disease_act(var/mob/M as mob, var/datum/pathogen/origin)
+		if (!origin.symptomatic)
+			return
+		if (blood_system && ishuman(M) && prob(origin.stage * 20))
+			var/mob/living/carbon/human/H = M
+			H.blood_volume += origin.stage
+		M.updatehealth()
+
+	react_to(var/R, var/zoom)
+		if (R)
+			return "The pathogen appears to be rapidly repurposing the reagent into efficient oxygen-transport proteins."
+
+	may_react_to()
+		return "The pathogenic bodies look bizarrely similar to mammalian erythrocytes."
+
+
