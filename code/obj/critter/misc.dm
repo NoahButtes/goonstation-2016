@@ -440,9 +440,20 @@
 			M.reagents.add_reagent("histamine", 12)
 			M.reagents.add_reagent("toxin", 2)
 
+/obj/critter/spacebee/angry
+	name = "angry space wasp"
+	desc = "An angry wasp in space."
+	angertext = "buzzes furiously at"
+	health = 30
+	firevuln = 0.5
+	brutevuln = 0.25
+
 /obj/item/reagent_containers/food/snacks/ingredient/egg/critter/wasp
 	name = "space wasp egg"
 	critter_type = /obj/critter/spacebee
+
+/obj/item/reagent_containers/food/snacks/ingredient/egg/critter/wasp/angry
+	critter_type = /obj/critter/spacebee/angry
 
 /obj/critter/magiczombie
 	name = "skeleton"

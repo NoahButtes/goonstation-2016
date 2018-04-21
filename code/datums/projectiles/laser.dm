@@ -343,13 +343,13 @@ toxic - poisons
 	dissipation_delay = 30
 	dissipation_rate = 1
 	ks_ratio = 1.0
-	cost = 40
+	cost = 10
 	window_pass = 0
 	var/egged = 0 //have we made an egg splat yet?
 
 	proc/throw_egg(var/turf/T)
 		if (T && egged == 0)
-			var/obj/item/reagent_containers/food/snacks/ingredient/egg/critter/wasp/W = new(T)
+			var/obj/item/reagent_containers/food/snacks/ingredient/egg/critter/wasp/angry/W = new(T)
 			W.throw_impact(T)
 			egged = 1
 	on_hit(atom/hit)
@@ -375,12 +375,17 @@ toxic - poisons
 	silentshot = 1 //any noise will be handled by the egg splattering anyway
 	hit_ground_chance = 0
 	damage_type = D_KINETIC
-	power = 240
+	power = 60
 	cost = 40
 	ks_ratio = 1.0
-	dissipation_rate = 250
+	dissipation_rate = 70
 	dissipation_delay = 0
 	window_pass = 0
+
+	proc/throw_egg(var/turf/T)
+		if (T)
+			var/obj/item/reagent_containers/food/snacks/ingredient/egg/critter/wasp/angry/W = new(T)
+			W.throw_impact(T)
 
 	on_launch(var/obj/projectile/P)
 		if (!P)
@@ -400,3 +405,14 @@ toxic - poisons
 		P4.rotateDirection(-60)
 		P4.launch()
 		P.die()
+
+	on_pointblank(var/obj/projectile/O, var/mob/target)
+		if (!O)
+			return
+		if (!target)
+			return
+		var/turf/T = get_turf(target)
+		if(T)
+			for(var/i=0, i < 4, i++)
+				throw_egg(T)
+		return
