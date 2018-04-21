@@ -99,7 +99,7 @@
 		src.add_contents(W)
 		hud.add_item(W)
 		add_fingerprint(user)
-		if (!src.sneaky && !istype(W, /obj/item/gun/energy/crossbow))
+		if (!src.sneaky && !istype(W, /obj/item/gun/energy/crossbow) && !istype(W, /obj/item/gun/energy/wasp))
 			user.visible_message("<span style=\"color:blue\">[user] has added [W] to [src]!</span>", "<span style=\"color:blue\">You have added [W] to [src].</span>")
 		return
 
