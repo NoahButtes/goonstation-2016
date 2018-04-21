@@ -325,3 +325,78 @@ toxic - poisons
 		power = 30
 		dissipation_rate = 30
 		sname = "scrap cutter"
+		
+		
+
+/datum/projectile/laser/wasp
+	icon = 'food_ingredient.dmi'
+	icon_state = "critter_egg"
+	name = "space wasp egg"
+	brightness = 0
+	sname = "space wasp egg"
+	shot_sound = null
+	shot_number = 1
+	silentshot = 1 //any noise will be handled by the egg splattering anyway
+	hit_ground_chance = 0
+	damage_type = D_KINETIC
+	power = 15
+	dissipation_delay = 30
+	dissipation_rate = 1
+	ks_ratio = 1.0
+	cost = 40
+	window_pass = 0
+	var/egged = 0 //have we made an egg splat yet?
+	
+	proc/throw_egg(var/turf/T)
+		if (T && egged == 0)
+			var/obj/item/reagent_containers/food/snacks/ingredient/egg/critter/wasp/W = new(T)
+			W.throw_impact(T)
+			egged = 1
+	on_hit(atom/hit)
+		var/turf/T = get_turf(hit)
+		if (T)
+			throw_egg(T)
+	on_end(obj/projectile/O)
+		if (O && egged == 0)
+			var/turf/T = get_turf(O)
+			if (T)
+				throw_egg(T)
+		else if (O)
+			egged = 0
+
+/datum/projectile/laser/quadwasp
+	name = "4 space wasp eggs"
+	icon = 'food_ingredient.dmi'
+	icon_state = "critter_egg"
+	brightness = 0
+	sname = "4 space wasp eggs"
+	shot_sound = null
+	shot_number = 1
+	silentshot = 1 //any noise will be handled by the egg splattering anyway
+	hit_ground_chance = 0
+	damage_type = D_KINETIC
+	power = 240
+	cost = 40
+	ks_ratio = 1.0
+	dissipation_rate = 250
+	dissipation_delay = 0
+	window_pass = 0
+
+	on_launch(var/obj/projectile/P)
+		if (!P)
+			return
+		var/datum/projectile/laser/wasp/L = new()
+		var/turf/PT = get_turf(P)
+		var/obj/projectile/P1 = initialize_projectile(PT, L, P.xo, P.yo, P.shooter)
+		P1.rotateDirection(60)
+		P1.launch()
+		var/obj/projectile/P2 = initialize_projectile(PT, L, P.xo, P.yo, P.shooter)
+		P2.rotateDirection(20)
+		P2.launch()
+		var/obj/projectile/P3 = initialize_projectile(PT, L, P.xo, P.yo, P.shooter)
+		P3.rotateDirection(-20)
+		P3.launch()
+		var/obj/projectile/P4 = initialize_projectile(PT, L, P.xo, P.yo, P.shooter)
+		P4.rotateDirection(-60)
+		P4.launch()
+		P.die()
