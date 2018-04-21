@@ -325,11 +325,11 @@ toxic - poisons
 		power = 30
 		dissipation_rate = 30
 		sname = "scrap cutter"
-		
-		
+
+
 
 /datum/projectile/laser/wasp
-	icon = 'food_ingredient.dmi'
+	icon = 'icons/obj/foodNdrink/food_ingredient.dmi'
 	icon_state = "critter_egg"
 	name = "space wasp egg"
 	brightness = 0
@@ -346,7 +346,7 @@ toxic - poisons
 	cost = 40
 	window_pass = 0
 	var/egged = 0 //have we made an egg splat yet?
-	
+
 	proc/throw_egg(var/turf/T)
 		if (T && egged == 0)
 			var/obj/item/reagent_containers/food/snacks/ingredient/egg/critter/wasp/W = new(T)
@@ -366,7 +366,7 @@ toxic - poisons
 
 /datum/projectile/laser/quadwasp
 	name = "4 space wasp eggs"
-	icon = 'food_ingredient.dmi'
+	icon = 'icons/obj/foodNdrink/food_ingredient.dmi'
 	icon_state = "critter_egg"
 	brightness = 0
 	sname = "4 space wasp eggs"
