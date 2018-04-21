@@ -249,6 +249,30 @@
 		projectiles = list(current_projectile)
 		..()
 
+///////////////////////////////////////Wasp Gun
+/obj/item/gun/energy/wasp
+	name = "mini wasp-egg-crossbow"
+	desc = "A weapon favored by many of the syndicate's stealth apiarists, which does damage over time using swarms of angry wasps. Utilizes a self-recharging atomic power cell to synthesize more wasp eggs. Somehow."
+	icon_state = "crossbow" //placeholder, would prefer a custom wasp themed icon
+	w_class = 2.0
+	item_state = "crossbow" //ditto
+	force = 4.0
+	throw_speed = 3
+	throw_range = 10
+	rechargeable = 0 // Cannot be recharged manually.
+	cell = new/obj/item/ammo/power_cell/self_charging/slowcharge
+	current_projectile = new/datum/projectile/laser/quadwasp
+	projectiles = null
+	is_syndicate = 1
+	silenced = 1
+	custom_cell_max_capacity = 100
+	module_research = list("science" = 2, "weapons" = 2, "energy" = 2, "miniaturization" = 10, "hydroponics" = 10) //deprecated in current code
+
+	New()
+		current_projectile = new/datum/projectile/laser/quadwasp
+		projectiles = list(current_projectile)
+		..()
+
 ////////////////////////////////////////EGun
 /obj/item/gun/energy/egun
 	name = "energy gun"
