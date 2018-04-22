@@ -472,13 +472,14 @@
 	w_class = 3
 	icon_dynamic = 0
 	icon_empty = "40mmR-0"
-	
+
 	attackby(obj/item/W as obj, mob/living/user as mob)
+		var/datum/projectile/bullet/grenade_shell/AMMO = src.ammo_type
 		if(!W || !user)
 			return
 		if (istype(W, /obj/item/chem_grenade) || istype(W, /obj/item/old_grenade))
-			if (src.ammo_type.has_grenade == 0)
-				src.ammo_type.load_nade(W)
+			if (AMMO.has_grenade == 0)
+				AMMO.load_nade(W)
 				user.u_equip(W)
 				W.layer = initial(W.layer)
 				W.set_loc(src)
@@ -490,25 +491,27 @@
 				return
 		else
 			return ..()
-	
+
 	attack_hand(mob/user as mob)
+		var/datum/projectile/bullet/grenade_shell/AMMO = src.ammo_type
 		if(!user)
 			return
-		if (src.loc == user && src.ammo_type.has_grenade != 0)
-			user.put_in_hand_or_drop(src.ammo_type.get_nade())
-			src.ammo_type.unload_nade()
+		if (src.loc == user && AMMO.has_grenade != 0)
+			user.put_in_hand_or_drop(AMMO.get_nade())
+			AMMO.unload_nade()
 			boutput(user, "You pry the grenade out of [src].")
 			src.add_fingerprint(user)
 			src.update_icon()
 			return
 		return ..()
-	
-	proc/update_icon()
-		if (src.ammo_type.has_grenade != 0)
+
+	update_icon()
+		var/datum/projectile/bullet/grenade_shell/AMMO = src.ammo_type
+		if (AMMO.has_grenade != 0)
 			src.icon_state = "40mmR"
 		else
 			src.icon_state = "40mmR-0"
-		
+
 
 // Ported from old, non-gun RPG-7 object class (Convair880).
 /obj/item/ammo/bullets/rpg

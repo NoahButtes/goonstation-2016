@@ -582,7 +582,7 @@ toxic - poisons
 	caliber = 1.57 // 40mm grenade shell
 	icon_turf_hit = "bhole-large"
 	casing = /obj/item/casing/grenade
-	
+
 	var/has_grenade = 0
 	var/obj/item/chem_grenade/CHEM = null
 	var/obj/item/old_grenade/OLD = null
@@ -601,7 +601,7 @@ toxic - poisons
 
 	proc/load_nade(var/obj/item/W)
 		if (W)
-			if (src.has_grenade = 0)
+			if (src.has_grenade == 0)
 				if (istype(W,/obj/item/chem_grenade))
 					src.CHEM = W
 					return 1
@@ -650,7 +650,7 @@ toxic - poisons
 				return
 			else //what the hell happened
 				return
-		else if
+		else
 			return
 
 	on_hit(atom/hit, angle, obj/projectile/O)
@@ -670,7 +670,7 @@ toxic - poisons
 				src.det(T)
 		else if (O)
 			src.has_det = 0
-			
+
 	on_launch(obj/projectile/P)
 		if (!P)
 			return
