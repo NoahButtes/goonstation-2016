@@ -460,6 +460,56 @@
 		amount_left = 1
 		max_amount = 1
 
+/obj/item/ammo/bullets/grenade_shell
+	sname = "40mm Custom Shell"
+	name = "40mm handgrenade conversion shell"
+	desc = "A 40mm shell used for converting hand grenades into impact detonation explosive shells"
+	amount_left = 1
+	max_amount = 1
+	icon_state = "40mmR-0"
+	ammo_type = new/datum/projectile/bullet/grenade_shell
+	caliber = 1.57
+	w_class = 3
+	icon_dynamic = 0
+	icon_empty = "40mmR-0"
+	
+	attackby(obj/item/W as obj, mob/living/user as mob)
+		if(!W || !user)
+			return
+		if (istype(W, /obj/item/chem_grenade) || istype(W, /obj/item/old_grenade))
+			if (src.ammo_type.has_grenade == 0)
+				src.ammo_type.load_nade(W)
+				user.u_equip(W)
+				W.layer = initial(W.layer)
+				W.set_loc(src)
+				src.update_icon()
+				boutput(user, "You load [W] into [src].")
+				return
+			else
+				boutput(user, "<span style=\"color:red\">For <i>some reason</i>, you are unable to place [W] into an already filled shell.</span>")
+				return
+		else
+			return ..()
+	
+	attack_hand(mob/user as mob)
+		if(!user)
+			return
+		if (src.loc == user && src.ammo_type.has_grenade != 0)
+			user.put_in_hand_or_drop(src.ammo_type.get_nade())
+			src.ammo_type.unload_nade()
+			boutput(user, "You pry the grenade out of [src].")
+			src.add_fingerprint(user)
+			src.update_icon()
+			return
+		return ..()
+	
+	proc/update_icon()
+		if (src.ammo_type.has_grenade != 0)
+			src.icon_state = "40mmR"
+		else
+			src.icon_state = "40mmR-0"
+		
+
 // Ported from old, non-gun RPG-7 object class (Convair880).
 /obj/item/ammo/bullets/rpg
 	sname = "MPRT rocket"
