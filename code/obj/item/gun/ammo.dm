@@ -472,6 +472,7 @@
 	w_class = 3
 	icon_dynamic = 0
 	icon_empty = "40mmR-0"
+	delete_on_reload = 0
 
 	attackby(obj/item/W as obj, mob/living/user as mob)
 		var/datum/projectile/bullet/grenade_shell/AMMO = src.ammo_type

@@ -604,9 +604,11 @@ toxic - poisons
 			if (src.has_grenade == 0)
 				if (istype(W,/obj/item/chem_grenade))
 					src.CHEM = W
+					src.has_grenade = 1
 					return 1
 				else if (istype(W, /obj/item/old_grenade))
 					src.OLD = W
+					src.has_grenade = 1
 					return 1
 				else
 					return 0
@@ -619,13 +621,13 @@ toxic - poisons
 		if (src.has_grenade !=0)
 			if (src.CHEM != null)
 				if (T)
-					src.CHEM.set_loc(T)
+					src.CHEM.loc = T
 				src.CHEM = null
 				src.has_grenade = 0
 				return 1
 			else if (src.OLD != null)
 				if (T)
-					src.OLD.set_loc(T)
+					src.OLD.loc = T
 				src.OLD = null
 				src.has_grenade = 0
 				return 1
@@ -637,15 +639,17 @@ toxic - poisons
 	proc/det(var/turf/T)
 		if (T && src.has_det == 0 && src.has_grenade != 0)
 			if (src.CHEM != null)
-				src.CHEM.set_loc(T)
-				src.CHEM.explode()
+				src.CHEM.loc = T
 				src.has_det = 1
+				spawn(1)
+					src.CHEM.explode()
 				src.has_grenade = 0
 				return
 			else if (src.OLD != null)
-				src.OLD.set_loc(T)
-				src.OLD.prime()
+				src.OLD.loc = T
 				src.has_det = 1
+				spawn(1)
+					src.OLD.prime()
 				src.has_grenade = 0
 				return
 			else //what the hell happened
@@ -671,20 +675,20 @@ toxic - poisons
 		else if (O)
 			src.has_det = 0
 
-	on_launch(obj/projectile/P)
+/*	on_launch(obj/projectile/P)
 		if (!P)
 			return
 		else if (src.has_grenade != 0)
 			if (src.CHEM != null)
-				src.CHEM.set_loc(P)
+				src.CHEM.loc = P
 				return
 			else if (src.OLD != null)
-				src.OLD.set_loc(P)
+				src.OLD.loc = P
 				return
 			else
 				return
 		else
-			return
+			return */
 
 /datum/projectile/bullet/glitch
 	name = "bullet"
