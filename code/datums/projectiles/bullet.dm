@@ -569,6 +569,113 @@ toxic - poisons
 		startSmoke(hit, dirflag, projectile)
 		return
 
+/datum/projectile/bullet/grenade_shell
+	name = "40mm grenade conversion shell"
+	window_pass = 0
+	icon_state = "40mmR"
+	damage_type = D_KINETIC
+	power = 25
+	dissipation_delay = 20
+	cost = 1
+	shot_sound = 'sound/weapons/rocket.ogg'
+	ks_ratio = 1.0
+	caliber = 1.57 // 40mm grenade shell
+	icon_turf_hit = "bhole-large"
+	casing = /obj/item/casing/grenade
+	
+	var/has_grenade = 0
+	var/obj/item/chem_grenade/CHEM = null
+	var/obj/item/old_grenade/OLD = null
+	var/has_det = 0 //have we detonated a grenade yet?
+
+	proc/load_nade(var/obj/item/W)
+		if (W)
+			if (has_grenade = 0)
+				if (istype(W,/obj/item/chem_grenade))
+					CHEM = W
+					return
+				else if (istype(W, /obj/item/old_grenade))
+					OLD = W
+					return
+				else
+					return
+			else
+				return
+		else
+			return
+
+	proc/unload_nade(var/turf/T)
+		if (T)
+			if (has_grenade !=0)
+				if (CHEM != null)
+					CHEM.loc = T
+					CHEM = null
+					has_grenade = 0
+					return
+				else if (OLD != null)
+					OLD.loc = T
+					OLD = null
+					has_grenade = 0
+					return
+				else //how did this happen?
+					return
+			else
+				return
+		else
+			return
+
+	proc/det(var/turf/T)
+		if (T && has_det == 0 && has_grenade != 0)
+			if (CHEM != null)
+				CHEM.loc = T
+				CHEM.explode()
+				has_det = 1
+				has_grenade = 0
+				return
+			else if (OLD != null)
+				OLD.loc = T
+				OLD.prime()
+				has_det = 1
+				has_grenade = 0
+				return
+			else //what the hell happened
+				return
+		else
+			return
+
+	on_hit(atom/hit, angle, obj/projectile/O)
+		var/turf/T = get_turf(hit)
+		if (T)
+			det(T)
+		else if (O)
+			var/turf/pT = get_turf(O)
+			if (pT)
+				det(pT)
+		return ..()
+
+	on_end(obj/projectile/O)
+		if (O && has_det == 0)
+			var/turf/T = get_turf(O)
+			if (T)
+				det(T)
+		else if (O)
+			has_det = 0
+			
+	on_launch(obj/projectile/P)
+		if (!P)
+			return
+		else if (has_grenade != 0)
+			if (CHEM != null)
+				CHEM.loc = P
+				return
+			else if (OLD != null)
+				OLD.loc = P
+				return
+			else
+				return
+		else
+			return
+
 /datum/projectile/bullet/glitch
 	name = "bullet"
 	window_pass = 1
