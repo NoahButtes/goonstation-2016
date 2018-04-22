@@ -588,6 +588,17 @@ toxic - poisons
 	var/obj/item/old_grenade/OLD = null
 	var/has_det = 0 //have we detonated a grenade yet?
 
+	proc/get_nade()
+		if (src.has_grenade != 0)
+			if (src.CHEM != null)
+				return src.CHEM
+			else if (src.OLD != null)
+				return src.OLD
+			else
+				return null
+		else
+			return null
+
 	proc/load_nade(var/obj/item/W)
 		if (W)
 			if (src.has_grenade = 0)
@@ -605,21 +616,20 @@ toxic - poisons
 			return 0
 
 	proc/unload_nade(var/turf/T)
-		if (T)
-			if (src.has_grenade !=0)
-				if (src.CHEM != null)
+		if (src.has_grenade !=0)
+			if (src.CHEM != null)
+				if (T)
 					src.CHEM.set_loc(T)
-					src.CHEM = null
-					src.has_grenade = 0
-					return 1
-				else if (src.OLD != null)
+				src.CHEM = null
+				src.has_grenade = 0
+				return 1
+			else if (src.OLD != null)
+				if (T)
 					src.OLD.set_loc(T)
-					src.OLD = null
-					src.has_grenade = 0
-					return 1
-				else //how did this happen?
-					return 0
-			else
+				src.OLD = null
+				src.has_grenade = 0
+				return 1
+			else //how did this happen?
 				return 0
 		else
 			return 0
@@ -640,7 +650,7 @@ toxic - poisons
 				return
 			else //what the hell happened
 				return
-		else
+		else if
 			return
 
 	on_hit(atom/hit, angle, obj/projectile/O)
