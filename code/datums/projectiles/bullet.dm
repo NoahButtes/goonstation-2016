@@ -590,53 +590,53 @@ toxic - poisons
 
 	proc/load_nade(var/obj/item/W)
 		if (W)
-			if (has_grenade = 0)
+			if (src.has_grenade = 0)
 				if (istype(W,/obj/item/chem_grenade))
-					CHEM = W
-					return
+					src.CHEM = W
+					return 1
 				else if (istype(W, /obj/item/old_grenade))
-					OLD = W
-					return
+					src.OLD = W
+					return 1
 				else
-					return
+					return 0
 			else
-				return
+				return 0
 		else
-			return
+			return 0
 
 	proc/unload_nade(var/turf/T)
 		if (T)
-			if (has_grenade !=0)
-				if (CHEM != null)
-					CHEM.loc = T
-					CHEM = null
-					has_grenade = 0
-					return
-				else if (OLD != null)
-					OLD.loc = T
-					OLD = null
-					has_grenade = 0
-					return
+			if (src.has_grenade !=0)
+				if (src.CHEM != null)
+					src.CHEM.loc = T
+					src.CHEM = null
+					src.has_grenade = 0
+					return 1
+				else if (src.OLD != null)
+					src.OLD.loc = T
+					src.OLD = null
+					src.has_grenade = 0
+					return 1
 				else //how did this happen?
-					return
+					return 0
 			else
-				return
+				return 0
 		else
-			return
+			return 0
 
 	proc/det(var/turf/T)
-		if (T && has_det == 0 && has_grenade != 0)
-			if (CHEM != null)
-				CHEM.loc = T
-				CHEM.explode()
-				has_det = 1
-				has_grenade = 0
+		if (T && src.has_det == 0 && src.has_grenade != 0)
+			if (src.CHEM != null)
+				src.CHEM.loc = T
+				src.CHEM.explode()
+				src.has_det = 1
+				src.has_grenade = 0
 				return
-			else if (OLD != null)
-				OLD.loc = T
-				OLD.prime()
-				has_det = 1
-				has_grenade = 0
+			else if (src.OLD != null)
+				src.OLD.loc = T
+				src.OLD.prime()
+				src.has_det = 1
+				src.has_grenade = 0
 				return
 			else //what the hell happened
 				return
@@ -646,30 +646,30 @@ toxic - poisons
 	on_hit(atom/hit, angle, obj/projectile/O)
 		var/turf/T = get_turf(hit)
 		if (T)
-			det(T)
+			src.det(T)
 		else if (O)
 			var/turf/pT = get_turf(O)
 			if (pT)
-				det(pT)
+				src.det(pT)
 		return ..()
 
 	on_end(obj/projectile/O)
-		if (O && has_det == 0)
+		if (O && src.has_det == 0)
 			var/turf/T = get_turf(O)
 			if (T)
-				det(T)
+				src.det(T)
 		else if (O)
-			has_det = 0
+			src.has_det = 0
 			
 	on_launch(obj/projectile/P)
 		if (!P)
 			return
-		else if (has_grenade != 0)
-			if (CHEM != null)
-				CHEM.loc = P
+		else if (src.has_grenade != 0)
+			if (src.CHEM != null)
+				src.CHEM.loc = P
 				return
-			else if (OLD != null)
-				OLD.loc = P
+			else if (src.OLD != null)
+				src.OLD.loc = P
 				return
 			else
 				return
