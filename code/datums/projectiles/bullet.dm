@@ -608,12 +608,12 @@ toxic - poisons
 		if (T)
 			if (src.has_grenade !=0)
 				if (src.CHEM != null)
-					src.CHEM.loc = T
+					src.CHEM.set_loc(T)
 					src.CHEM = null
 					src.has_grenade = 0
 					return 1
 				else if (src.OLD != null)
-					src.OLD.loc = T
+					src.OLD.set_loc(T)
 					src.OLD = null
 					src.has_grenade = 0
 					return 1
@@ -627,13 +627,13 @@ toxic - poisons
 	proc/det(var/turf/T)
 		if (T && src.has_det == 0 && src.has_grenade != 0)
 			if (src.CHEM != null)
-				src.CHEM.loc = T
+				src.CHEM.set_loc(T)
 				src.CHEM.explode()
 				src.has_det = 1
 				src.has_grenade = 0
 				return
 			else if (src.OLD != null)
-				src.OLD.loc = T
+				src.OLD.set_loc(T)
 				src.OLD.prime()
 				src.has_det = 1
 				src.has_grenade = 0
@@ -666,10 +666,10 @@ toxic - poisons
 			return
 		else if (src.has_grenade != 0)
 			if (src.CHEM != null)
-				src.CHEM.loc = P
+				src.CHEM.set_loc(P)
 				return
 			else if (src.OLD != null)
-				src.OLD.loc = P
+				src.OLD.set_loc(P)
 				return
 			else
 				return
