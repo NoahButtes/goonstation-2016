@@ -460,9 +460,10 @@
 		amount_left = 1
 		max_amount = 1
 
+//basically an internal object for converting hand-grenades into shells, but can be spawned independently.
 /obj/item/ammo/bullets/grenade_shell
 	sname = "40mm Custom Shell"
-	name = "40mm handgrenade conversion shell"
+	name = "40mm hand grenade conversion chamber"
 	desc = "A 40mm shell used for converting hand grenades into impact detonation explosive shells"
 	amount_left = 1
 	max_amount = 1
@@ -472,7 +473,7 @@
 	w_class = 3
 	icon_dynamic = 0
 	icon_empty = "40mmR-0"
-	delete_on_reload = 1
+	delete_on_reload = 0 //deleting it before the shell can be fired breaks things
 
 	attackby(obj/item/W as obj, mob/living/user as mob)
 		var/datum/projectile/bullet/grenade_shell/AMMO = src.ammo_type
@@ -485,10 +486,10 @@
 				W.layer = initial(W.layer)
 				W.set_loc(src)
 				src.update_icon()
-				boutput(user, "You load [W] into [src].")
+				boutput(user, "You load [W] into the [src].")
 				return
 			else
-				boutput(user, "<span style=\"color:red\">For <i>some reason</i>, you are unable to place [W] into an already filled shell.</span>")
+				boutput(user, "<span style=\"color:red\">For <i>some reason</i>, you are unable to place [W] into an already filled chamber.</span>")
 				return
 		else
 			return ..()

@@ -495,6 +495,19 @@
 		current_projectile = new/datum/projectile/bullet/smoke
 		..()
 
+	attackby(obj/item/b as obj, mob/user as mob)
+		if (istype(b, /obj/item/chem_grenade) || istype(b, /obj/item/old_grenade))
+			if(src.ammo.amount_left > 0)
+				boutput(user, "<span style=\"color:red\">The [src] already has something in it! You can't use the conversion chamber right now! You'll have to manually unload the [src]!</span>")
+				return
+			else
+				var/obj/item/ammo/bullets/grenade_shell/TO_LOAD = new /obj/item/ammo/bullets/grenade_shell
+				TO_LOAD.attackby(b, user)
+				src.attackby(TO_LOAD, user)
+				return
+		else
+			..()
+
 // Ported from old, non-gun RPG-7 object class (Convair880).
 /obj/item/gun/kinetic/rpg7
 	desc = "A rocket-propelled grenade launcher licensed by the Space Irish Republican Army."
