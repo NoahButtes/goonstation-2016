@@ -467,12 +467,12 @@
 	desc = "A 40mm shell used for converting hand grenades into impact detonation explosive shells"
 	amount_left = 1
 	max_amount = 1
-	icon_state = "40mmR-0"
+	icon_state = "paintballr-4"
 	ammo_type = new/datum/projectile/bullet/grenade_shell
 	caliber = 1.57
 	w_class = 3
 	icon_dynamic = 0
-	icon_empty = "40mmR-0"
+	icon_empty = "paintballb-4"
 	delete_on_reload = 0 //deleting it before the shell can be fired breaks things
 
 	attackby(obj/item/W as obj, mob/living/user as mob)
