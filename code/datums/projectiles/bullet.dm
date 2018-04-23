@@ -675,21 +675,6 @@ toxic - poisons
 		else if (O)
 			src.has_det = 0
 
-/*	on_launch(obj/projectile/P)
-		if (!P)
-			return
-		else if (src.has_grenade != 0)
-			if (src.CHEM != null)
-				src.CHEM.loc = P
-				return
-			else if (src.OLD != null)
-				src.OLD.loc = P
-				return
-			else
-				return
-		else
-			return */
-
 /datum/projectile/bullet/glitch
 	name = "bullet"
 	window_pass = 1
