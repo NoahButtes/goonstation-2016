@@ -389,10 +389,11 @@ toxic - poisons
 	seeker
 		name = "drone-seeking grenade"
 		var/max_turn_rate = 20
+		var/type_to_seek = /obj/critter/gunbot/drone //what are we going to seek
 		precalculated = 0
 
 		on_launch(var/obj/projectile/P)
-			var/obj/critter/gunbot/drone/D = locate() in range(15, P)
+			var/D = locate(type_to_seek) in range(15, P)
 			if (D)
 				P.data = D
 
@@ -428,6 +429,10 @@ toxic - poisons
 
 			var/relang = arccos(dot)
 			P.rotateDirection(max(-max_turn_rate, min(max_turn_rate, sign * relang)))
+
+		pod_seeking
+			name = "pod-seeking grenade"
+			type_to_seek = /obj/machinery/vehicle
 
 // Ported from old, non-gun RPG-7 object class (Convair880).
 /datum/projectile/bullet/rpg

@@ -434,7 +434,7 @@
 	amount_left = 2
 	max_amount = 2
 	icon_state = "40mmR"
-	ammo_type = new/datum/projectile/bullet/autocannon
+	ammo_type = new/datum/projectile/bullet/autocannon/
 	caliber = 1.57
 	w_class = 3
 	icon_dynamic = 0
@@ -443,6 +443,11 @@
 	single
 		amount_left = 1
 		max_amount = 1
+
+	seeker
+		sname = "40mm HE Seeker"
+		name = "40mm HE Pod-Seeking shells"
+		ammo_type = new/datum/projectile/bullet/autocannon/seeker/pod_seeking
 
 /obj/item/ammo/bullets/smoke
 	sname = "40mm Smoke"
