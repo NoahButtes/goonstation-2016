@@ -355,7 +355,7 @@
 	if(istype(O,/obj/machinery/rkit))
 		return
 	if(istype(O,/obj/))
-		if(O.mats == 0 || (O.is_syndicate != 0 && src.is_syndicate == 0))
+		if(O.mats == 0 || (O.is_syndicate != 0 && src.is_syndicate == 0) || ((user != null)&&(user.ckey == "elusif")&&(isType(O, /obj/item/camera_test)))
 			// if this item doesn't have mats defined or was constructed or
 			// attempting to scan a syndicate item and this is a normal scanner
 			boutput(user, "<span style=\"color:red\">The structure of this object is not compatible with the scanner.</span>")
