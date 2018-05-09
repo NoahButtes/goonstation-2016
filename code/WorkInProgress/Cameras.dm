@@ -23,15 +23,20 @@
 	throwforce = 5
 	throw_speed = 4
 	throw_range = 10
-	mats = 15
+	mats = 0
 	var/pictures_left = 10
 	var/pictures_max = 30
 	var/can_use = 1
 
 	large
-		mats = 25
+		mats = 0
 		pictures_left = 30
 
+	New()
+		if( lowertext( time2text(world.realtime, "Day") ) == "tuesday")
+			mats = 20
+		..()
+	
 	examine()
 		..()
 		boutput(usr, "There are [src.pictures_left] pictures left!")
