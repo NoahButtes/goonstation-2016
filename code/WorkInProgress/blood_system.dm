@@ -135,7 +135,7 @@ this is already used where it needs to be used, you can probably ignore it.
 
 	var/mob/living/carbon/human/H = some_idiot
 
-	if (H.stat ==  2 || H.nodamage || !H.can_bleed)
+	if (H.stat ==  2 || H.nodamage || !H.can_bleed || isfireelemental(H))
 		if (H.bleeding)
 			H.bleeding = 0
 			H.bleeding_internal = 0
@@ -250,6 +250,12 @@ this is already used where it needs to be used, you can probably ignore it.
 		H.bleeding = 0 // no just stop bleeding entirely okay, you're dead, stop it
 		H.bleeding_internal = 0
 		return
+		
+	if (isfireelemental(H))
+		if (haine_blood_debug) logTheThing("debug", H, null, "<b>HAINE BLOOD DEBUG: [H] is a fire elemental and their bleeding has been set to 0 and repair was canceled</b>")
+		H.bleeding = 0
+		H.bleeding_internal = 0
+		return
 
 	if (isvampire(H))
 		if (haine_blood_debug) logTheThing("debug", H, null, "<b>HAINE BLOOD DEBUG: [H] is a vampire and their bleeding has been set to 0 and repair was canceled</b>")
@@ -362,10 +368,10 @@ this is already used where it needs to be used, you can probably ignore it.
 		return
 
 
-	if (H.stat == 2 || H.nodamage || !H.can_bleed)
+	if (H.stat == 2 || H.nodamage || !H.can_bleed || isfireelemental(H))
 		if (H.bleeding)
 			H.bleeding = 0 // stop that
-		if (haine_blood_debug) logTheThing("debug", some_idiot, null, "<b>HAINE BLOOD DEBUG: [some_idiot] is either dead, immortal, or has can_bleed disabled, so bleed was canceled</b>")
+		if (haine_blood_debug) logTheThing("debug", some_idiot, null, "<b>HAINE BLOOD DEBUG: [some_idiot] is either dead, immortal, a fire elemental, or has can_bleed disabled, so bleed was canceled</b>")
 		return
 
 	if (isvampire(H)) // vampires should be special
@@ -422,7 +428,7 @@ this is already used where it needs to be used, you can probably ignore it.
 	if (!A.reagents || (!istype(some_human_idiot) && !some_idiot.reagents))
 		return 0
 	if (istype(some_human_idiot))
-		if (isvampire(some_human_idiot) && (some_human_idiot.get_vampire_blood() <= 0) || (!isvampire(some_human_idiot) && !some_human_idiot.reagents && !some_human_idiot.blood_volume))
+		if (isvampire(some_human_idiot) && (some_human_idiot.get_vampire_blood() <= 0) || (!isvampire(some_human_idiot) && !some_human_idiot.reagents && !some_human_idiot.blood_volume) || isfireelemental(some_human_idiot))
 			return 0
 
 	var/reagents_to_transfer = (amount / 5) * 2
@@ -666,7 +672,7 @@ this is already used where it needs to be used, you can probably ignore it.
 
 	var/mob/living/carbon/human/H = some_idiot
 
-	if (H.stat ==  2 || H.nodamage || !H.can_bleed || isvampire(H))
+	if (H.stat ==  2 || H.nodamage || !H.can_bleed || isvampire(H) || isfireelemental(H))
 		if (H.bleeding)
 			H.bleeding = 0
 			H.bleeding_internal = 0
