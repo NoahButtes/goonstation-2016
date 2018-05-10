@@ -36,6 +36,7 @@
 #define iswrestler(x) ((istype(x, /mob/living/carbon/human) || istype(x, /mob/living/critter)) && x:get_ability_holder(/datum/abilityHolder/wrestler) != null)
 #define iswraith(x) istype(x, /mob/wraith)
 #define isintangible(x) istype(x, /mob/living/intangible)
+#define isfireelemental(x) (istype(x, /mob/living/carbon/human) && x:mutantrace && istype(x:mutantrace, /datum/mutantrace/fire_elemental))
 
 // Why the separate mask check? NPCs don't use assigned_role and we still wanna play the cluwne-specific sound effects.
 #define iscluwne(x) (istype(x, /mob/living/carbon/human) && ((x:mind && x:mind.assigned_role && x:mind:assigned_role == "Cluwne") || istype(x:wear_mask, /obj/item/clothing/mask/cursedclown_hat)))
