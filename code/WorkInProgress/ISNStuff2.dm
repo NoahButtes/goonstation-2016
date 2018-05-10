@@ -92,6 +92,8 @@
 		return 1
 	if(src.get_ability_holder(/datum/abilityHolder/changeling))
 		return 1
+	if(isfireelemental(src)) //they're constantly warm, okay
+		return 1
 	if(src.nodamage)
 		return 1
 	return 0
@@ -100,6 +102,8 @@
 	if (!src)
 		return 0
 	if(src.bioHolder && src.bioHolder.HasOneOfTheseEffects("fire_resist","thermal_resist"))
+		return 1
+	if(isfireelemental(src))
 		return 1
 	if(src.nodamage)
 		return 1
