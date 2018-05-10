@@ -352,8 +352,8 @@
 	if (count >= A.max_stacks)
 		return null
 
-	if (ischangeling(src) || isvampire(src) || src.nodamage)
-		//Vampires and changelings are immune to disease, as are the godmoded.
+	if (ischangeling(src) || isvampire(src) || isfireelemental(src) || src.nodamage)
+		//Vampires, changelings, and fire elementals are immune to disease, as are the godmoded.
 		//This is here rather than in the resistance check proc because otherwise certain things could bypass the
 		//hard immunity these folks are supposed to have
 		return null
