@@ -85,6 +85,9 @@
 					// Vampires can't use this trick to inflate their blood count, because they can't get more than ~30% of it back.
 					// Also ignore that second container of blood entirely if it's a vampire (Convair880).
 					if (istype(H))
+						if(isfireelemental(H))
+							user.show_text("[H] has no blood vessels to speak of, only fire!", "red")
+							return
 						if ((isvampire(H) && (H.get_vampire_blood() <= 0)) || (!isvampire(H) && !H.blood_volume))
 							user.show_text("[H]'s veins appear to be completely dry!", "red")
 							return
