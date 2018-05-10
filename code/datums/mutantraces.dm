@@ -779,7 +779,7 @@
 	human_compatible = 0
 	uses_human_clothes = 0
 	override_attack = 0
-	firevuln = -1 //Made of fire, so they're probably actually healed by burn damage
+	firevuln = 0 //they're made of fire, so they probably shouldn't get burned
 	r_limb_type_mutantrace = /obj/item/parts/human_parts/arm/right/fire_elemental //TODO
 	l_limb_type_mutantrace = /obj/item/parts/human_parts/arm/left/fire_elemental //TODO
 	ignore_missing_limbs = 1
