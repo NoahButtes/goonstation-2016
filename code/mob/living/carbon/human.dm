@@ -2265,7 +2265,7 @@
 			if (9 to INFINITY)
 				. += "<br><span style=\"color:red\"><B>[src.name] is bleeding very badly!</B></span>"
 
-	if (!isvampire(src) && (src.blood_volume < 500)) // Added a check for vampires (Convair880).
+	if (!isvampire(src) && !(isfireelemental(src)) && (src.blood_volume < 500)) // Added a check for vampires (Convair880).
 		switch (src.blood_volume)
 			if (-INFINITY to 100)
 				. += "<br><span style=\"color:red\"><B>[src.name] is extremely pale!</B></span>"
@@ -4280,7 +4280,7 @@
 		if (!blood_system) // I dunno if this'll do what I want but hopefully it will
 			return
 
-		if (src.stat == 2 || src.nodamage || !src.can_bleed || isvampire(src)) // if we're dead or immortal or have otherwise been told not to bleed, don't bother
+		if (src.stat == 2 || src.nodamage || !src.can_bleed || isvampire(src) || isfireelemental(src)) // if we're dead or immortal or have otherwise been told not to bleed, don't bother
 			if (src.bleeding)
 				src.bleeding = 0 // also stop bleeding if we happen to be doing that
 			return
@@ -5754,7 +5754,7 @@
 /mob/living/carbon/human/infected(var/datum/pathogen/P)
 	if (src.stat == 2)
 		return
-	if (ischangeling(src) || isvampire(src)) // Vampires were missing here. They're immune to old-style diseases too (Convair880).
+	if (ischangeling(src) || isvampire(src) || isfireelemental(src)) // Vampires were missing here. They're immune to old-style diseases too (Convair880).
 		return 0
 	if (P.pathogen_uid in src.immunities)
 		return 0
