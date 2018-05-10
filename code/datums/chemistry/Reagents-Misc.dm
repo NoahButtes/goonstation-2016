@@ -497,9 +497,19 @@ datum
 				src = null
 				if (method == TOUCH)
 					var/mob/living/L = M
-					if (istype(L) && L.burning)
-						L.update_burning(-50)
-				return
+					if (istype(L))
+						if(L.burning)
+							L.update_burning(-50)
+						var/mob/living/carbon/human/H = L
+						if(istype(H))
+							if (isfireelemental(H))
+								H.emote("scream")
+								for(var/mob/O in AIviewers(H, null))
+									O.show_message(text("<span style=\"color:red\"><b>[] begins to smolder and sputter!</b></span>", H), 1)
+								boutput(H, "<span style=\"color:red\">Fire Fighting Foam! It doesn't burn!</span>") //HEH
+								var/brutedmg = volume * 1.25
+								H.TakeDamage("chest", 0, brutedmg, 0, DAMAGE_BRUTE)
+								H.updatehealth()
 
 		silicate
 			name = "silicate"
