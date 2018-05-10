@@ -62,14 +62,18 @@
 
 		if (blood_system)
 			if (verbose_reagent_info)
-				if (isvampire(H)) // Added a pair of vampire checks here (Convair880).
+				if (isfireelemental(H))
+					blood_data = "<span style='color:red'>Blood level: 500 units of FIRE</span>"
+				else if (isvampire(H)) // Added a pair of vampire checks here (Convair880).
 					blood_data = "<span style='color:red'>Blood level: 500 units</span>"
 				else
 					blood_data = "<span style='color:red'>Blood level: [H.blood_volume] unit[H.blood_volume == 1 ? "" : "s"]</span>"
 				if (H.bleeding)
 					blood_data += " | <span style='color:red'>Blood loss: [H.bleeding] unit[H.bleeding == 1 ? "" : "s"]</span>"
 			else
-				if (isvampire(H))
+				if (isfireelemental(H))
+					blood_data = "<span style='color:red'>Blood level: FIRE</span>"
+				else if (isvampire(H))
 					blood_data = "<span style='color:red'>Blood level: NORMAL</span>"
 				else
 					switch (H.blood_volume)
