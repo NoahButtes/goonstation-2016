@@ -779,7 +779,9 @@
 	human_compatible = 0
 	uses_human_clothes = 0
 	override_attack = 0
+	var/original_name
 	firevuln = 0 //they're made of fire, so they probably shouldn't get burned
+	brutevuln = 0.2 //how do you punch a fire???
 	r_limb_type_mutantrace = /obj/item/parts/human_parts/arm/right/fire_elemental //TODO
 	l_limb_type_mutantrace = /obj/item/parts/human_parts/arm/left/fire_elemental //TODO
 	ignore_missing_limbs = 1
@@ -787,28 +789,16 @@
 	New()
 		..()
 		if (mob)
-			/*
-			mob.add_stam_mod_max("werewolf", 100) // Gave them a significant stamina boost, as they're melee-orientated (Convair880).
-			mob.add_stam_mod_regen("werewolf", 25)
+			mob.add_stam_mod_max("fire elemental", 1000) //who needs ATP when we're literally made of fire
+			mob.add_stam_mod_regen("fire elemental", 1000)
 
 			src.original_name = mob.real_name
-			mob.real_name = "werewolf"
-
-			var/duration = 3000
-			var/datum/ailment_data/disease/D = mob.find_ailment_by_type(/datum/ailment/disease/lycanthropy/)
-			if(D)
-				D.cycles++
-				duration = rand(2000, 4000) * D.cycles
-				spawn(duration)
-					if(src)
-						if (mob) mob.show_text("<b>You suddenly transform back into a human!</b>", "red")
-						qdel(src)
-			*/
+			mob.real_name = "living flame"
 
 	disposing()
 		if (mob)
-			mob.remove_stam_mod_max("werewolf")
-			mob.remove_stam_mod_regen("werewolf")
+			mob.remove_stam_mod_max("fire elemental")
+			mob.remove_stam_mod_regen("fire elemental")
 
 			if (!isnull(src.original_name))
 				mob.real_name = src.original_name
@@ -816,7 +806,7 @@
 		return ..()
 
 	movement_delay()
-		return -1
+		return -2 //hot rod
 
 	sight_modifier()
 		if (mob && ismob(mob))
