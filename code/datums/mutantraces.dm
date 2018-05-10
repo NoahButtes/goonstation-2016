@@ -826,6 +826,7 @@
 		return
 
 	//Fire elementals are made of fire and, hence, can't (permanently) lose limbs.
+	//TODO
 	onLife()
 		if (mob && ismob(mob))
 			mob.paralysis = 0
@@ -861,12 +862,12 @@
 		var/message = null
 		switch(act)
 			if("howl", "scream")
-				if(mob.emote_allowed)
+				if (mob.emote_allowed)
 					mob.emote_allowed = 0
-					message = "<span style=\"color:red\"><B>[mob] howls [pick("ominously", "eerily", "hauntingly", "proudly", "loudly")]!</B></span>"
-					playsound(get_turf(mob), "sound/misc/werewolf_howl.ogg", 80, 0, 0, max(0.7, min(1.2, 1.0 + (30 - mob.bioHolder.age)/60)))
-					spawn(30)
-						mob.emote_allowed = 1
+					message = "<span style=\"color:red\"><B>[mob] screeches!</B></span>"
+					playsound(get_turf(mob), "sound/voice/creepyshriek.ogg", 60, 1)
+					spawn (30)
+						if (mob) mob.emote_allowed = 1
 			if("burp")
 				if(mob.emote_allowed)
 					mob.emote_allowed = 0
