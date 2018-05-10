@@ -141,6 +141,9 @@
 								if (ispredator(H))
 									skull_type = /obj/item/skull/strange
 									skull_desc = "A trophy taken from a predator, the finest hunters of all."
+								if (isfireelemental(H))
+									skull_value = 4
+									skull_desc = "A trophy taken from a living flame! It is an immense honor."
 								if (iswerewolf(H))
 									skull_value = 4
 									skull_desc = "A grand trophy from a lycanthrope, a very capable hunter. It is an immense honor."
