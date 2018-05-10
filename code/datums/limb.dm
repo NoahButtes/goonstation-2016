@@ -218,6 +218,7 @@
 		cooldown = 40
 		reload_time = 40
 
+	//deprecated arena fire elemental critter limb
 	fire_elemental
 		proj = new/datum/projectile/bullet/flare
 		shots = 1
@@ -695,3 +696,64 @@
 
 		..()
 		return
+		
+//FIRE ELEMENTAL MUTANT RACE - BUTTES
+/datum/limb/fire_elemental
+	attack_hand(atom/target, var/mob/living/user, var/reach)
+		if (!holder)
+			return
+			
+		if (!istype(user))
+			target.attack_hand(user)
+			return
+
+		if (isturf(target))
+			target.hotspot_expose(30000,2000)
+
+		if (isobj(target))
+			target.temperature_expose(null, 30000, 2000)
+		..()
+		return
+
+	proc/accident(mob/target, mob/living/user)
+		if (prob(25))
+			logTheThing("combat", user, target, "accidentally harms %target% with wendigo limbs at [log_loc(user)].")
+			user.visible_message("<span style=\"color:red\"><b>[user] accidentally claws [target] while trying to [user.a_intent] them!</b></span>", "<span style=\"color:red\"><b>You accidentally claw [target] while trying to [user.a_intent] them!</b></span>")
+			harm(target, user, 1)
+			return 1
+		return 0
+
+	help(mob/target, var/mob/living/user)
+		if (accident(target, user))
+			return
+		else
+			..()
+
+	disarm(mob/target, var/mob/living/user)
+		if (accident(target, user))
+			return
+		else
+			..()
+
+	grab(mob/target, var/mob/living/user)
+		if (accident(target, user))
+			return
+		else
+			..()
+
+	harm(mob/target, var/mob/living/user, var/no_logs = 0)
+		var/quality = src.holder.quality
+		if (no_logs != 1)
+			logTheThing("combat", user, target, "mauls %target% with wendigo limbs at [log_loc(user)].")
+		var/obj/item/affecting = target.get_affecting(user)
+		var/datum/attackResults/msgs = user.calculate_melee_attack(target, affecting, 6, 9, rand(5,9) * quality)
+		user.attack_effects(target, affecting)
+		var/action = pick("maim", "maul", "mangle", "rip", "claw", "lacerate", "mutilate")
+		msgs.base_attack_message = "<b><span style='color:red'>[user] [action]s [target] with their [src.holder]!</span></b>"
+		msgs.played_sound = "sound/effects/bloody_stab.ogg"
+		msgs.damage_type = DAMAGE_CUT
+		msgs.flush(SUPPRESS_LOGS)
+		if (prob(35 * quality))
+			target.weakened += 4 * quality
+
+		
