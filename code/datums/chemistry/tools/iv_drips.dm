@@ -93,6 +93,11 @@
 				if (src.reagents.is_full())
 					user.show_text("[src] is full!", "red")
 					return
+				
+				if (isfireelemental(H))
+					user.show_text("[H] doesn't have any blood to give!", "red")
+					return
+					
 				// Vampires can't use this trick to inflate their blood count, because they can't get more than ~30% of it back.
 				// Also ignore that second container of blood entirely if it's a vampire (Convair880).
 				if ((isvampire(H) && (H.get_vampire_blood() <= 0)) || (!isvampire(H) && !H.blood_volume))
@@ -154,6 +159,12 @@
 				"<span style=\"color:blue\">[src] fills up and stops drawing blood from you.</span>")
 				src.stop_transfusion()
 				return
+
+			if (isfireelemental(src.patient))
+				src.patient.visible_message("<span style=\"color:red\">[src.patient] doesn't have any blood to draw!</span>")
+				src.stop_transfusion()
+				return
+
 			// Vampires can't use this trick to inflate their blood count, because they can't get more than ~30% of it back.
 			// Also ignore that second container of blood entirely if it's a vampire (Convair880).
 			if ((isvampire(src.patient) && (src.patient.get_vampire_blood() <= 0)) || (!isvampire(src.patient) && !src.patient.reagents.total_volume && !src.patient.blood_volume))
