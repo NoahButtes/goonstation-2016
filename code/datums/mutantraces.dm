@@ -772,3 +772,106 @@
 	sight_modifier()
 		mob.see_in_dark = SEE_DARK_HUMAN + 1
 		mob.see_invisible = 1
+
+/datum/mutantrace/fire_elemental
+	name = "fire elemental"
+	icon_state = "fire_elemental"
+	human_compatible = 0
+	uses_human_clothes = 0
+	override_attack = 0
+	firevuln = -1 //Made of fire, so they're probably actually healed by burn damage
+	r_limb_type_mutantrace = /obj/item/parts/human_parts/arm/right/fire_elemental //TODO
+	l_limb_type_mutantrace = /obj/item/parts/human_parts/arm/left/fire_elemental //TODO
+	ignore_missing_limbs = 1
+
+	New()
+		..()
+		if (mob)
+			/*
+			mob.add_stam_mod_max("werewolf", 100) // Gave them a significant stamina boost, as they're melee-orientated (Convair880).
+			mob.add_stam_mod_regen("werewolf", 25)
+
+			src.original_name = mob.real_name
+			mob.real_name = "werewolf"
+
+			var/duration = 3000
+			var/datum/ailment_data/disease/D = mob.find_ailment_by_type(/datum/ailment/disease/lycanthropy/)
+			if(D)
+				D.cycles++
+				duration = rand(2000, 4000) * D.cycles
+				spawn(duration)
+					if(src)
+						if (mob) mob.show_text("<b>You suddenly transform back into a human!</b>", "red")
+						qdel(src)
+			*/
+
+	disposing()
+		if (mob)
+			mob.remove_stam_mod_max("werewolf")
+			mob.remove_stam_mod_regen("werewolf")
+
+			if (!isnull(src.original_name))
+				mob.real_name = src.original_name
+
+		return ..()
+
+	movement_delay()
+		return -1
+
+	sight_modifier()
+		if (mob && ismob(mob))
+			mob.sight |= SEE_MOBS
+			mob.see_in_dark = SEE_DARK_FULL
+			mob.see_invisible = 2
+		return
+
+	//Fire elementals are made of fire and, hence, can't (permanently) lose limbs.
+	onLife()
+		if (mob && ismob(mob))
+			mob.paralysis = 0
+			mob.weakened = 0
+			mob.stunned = 0
+			mob.drowsyness = 0
+			mob.change_misstep_chance(-INFINITY)
+			mob.slowed = 0
+			mob.stuttering = 0
+			changeling_super_heal_step(mob)
+			if (mob.paralysis)
+				mob.paralysis = max(0, mob.paralysis - 2)
+			if (mob.weakened)
+				mob.weakened = max(0, mob.weakened - 2)
+			if (mob.stunned)
+				mob.stunned = max(0, mob.stunned - 2)
+			if (mob.drowsyness)
+				mob.drowsyness = max(0, mob.stunned - 2)
+			if (mob.misstep_chance)
+				mob.change_misstep_chance(-10)
+			if (mob.slowed)
+				mob.slowed = max(0, mob.slowed -2)
+
+		return
+
+	say_verb()
+		return "sizzles"
+
+	say_filter(var/message)
+		return replacetext(message, "s", stutter("ss"))
+
+	emote(var/act)
+		var/message = null
+		switch(act)
+			if("howl", "scream")
+				if(mob.emote_allowed)
+					mob.emote_allowed = 0
+					message = "<span style=\"color:red\"><B>[mob] howls [pick("ominously", "eerily", "hauntingly", "proudly", "loudly")]!</B></span>"
+					playsound(get_turf(mob), "sound/misc/werewolf_howl.ogg", 80, 0, 0, max(0.7, min(1.2, 1.0 + (30 - mob.bioHolder.age)/60)))
+					spawn(30)
+						mob.emote_allowed = 1
+			if("burp")
+				if(mob.emote_allowed)
+					mob.emote_allowed = 0
+					message = "<B>[mob]</B> belches."
+					playsound(get_turf(mob), "sound/misc/burp_alien.ogg", 60, 1)
+					spawn(10)
+						mob.emote_allowed = 1
+		return message
