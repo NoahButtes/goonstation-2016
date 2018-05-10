@@ -699,6 +699,8 @@
 		
 //FIRE ELEMENTAL MUTANT RACE - BUTTES
 /datum/limb/fire_elemental
+	var/armtemp = 30000 //temperature for use below
+	
 	attack_hand(atom/target, var/mob/living/user, var/reach)
 		if (!holder)
 			return
@@ -708,10 +710,10 @@
 			return
 
 		if (isturf(target))
-			target.hotspot_expose(30000,2000)
+			target.hotspot_expose(armtemp,2000)
 
 		if (isobj(target))
-			target.temperature_expose(null, 30000, 2000)
+			target.temperature_expose(null, armtemp, 2000)
 		..()
 		return
 
