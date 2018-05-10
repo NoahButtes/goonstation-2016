@@ -24,6 +24,10 @@
 		if (!ishuman(target)) // Only humans use the blood system.
 			boutput(M, __red("You can't seem to find any blood vessels."))
 			return 0
+		
+		if (isfireelemental(target))
+			boutput(M, __red("Living fire isn't even remotely close to blood! You can't drink that!"))
+			return 0
 
 		if (M == target)
 			boutput(M, __red("Why would you want to bite yourself?"))
