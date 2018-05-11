@@ -794,6 +794,7 @@
 
 			src.original_name = mob.real_name
 			mob.real_name = "living flame"
+			mob.ignore_organs = 1 //we don't need organs where we're going
 
 	disposing()
 		if (mob)
@@ -819,28 +820,43 @@
 	//TODO
 	onLife()
 		if (mob && ismob(mob))
-			mob.paralysis = 0
-			mob.weakened = 0
-			mob.stunned = 0
-			mob.drowsyness = 0
-			mob.change_misstep_chance(-INFINITY)
-			mob.slowed = 0
 			mob.stuttering = 0
 			changeling_super_heal_step(mob)
 			if (mob.paralysis)
-				mob.paralysis = max(0, mob.paralysis - 2)
+				mob.paralysis = max(0, mob.paralysis - 4)
 			if (mob.weakened)
-				mob.weakened = max(0, mob.weakened - 2)
+				mob.weakened = max(0, mob.weakened - 4)
 			if (mob.stunned)
-				mob.stunned = max(0, mob.stunned - 2)
+				mob.stunned = max(0, mob.stunned - 4)
 			if (mob.drowsyness)
-				mob.drowsyness = max(0, mob.stunned - 2)
+				mob.drowsyness = max(0, mob.stunned - 4)
 			if (mob.misstep_chance)
-				mob.change_misstep_chance(-10)
+				mob.change_misstep_chance(-20)
 			if (mob.slowed)
-				mob.slowed = max(0, mob.slowed -2)
-
+				mob.slowed = max(0, mob.slowed - 4)
 		return
+		
+	onDeath()
+		mob.show_message("<span style=\"color:blue\">A fire still burns brightly within you! You shall rise from the ashes!</span>")
+		spawn(20)
+			if (mob)
+				mob.HealDamage("All", 1000, 1000)
+				mob.take_toxin_damage(-INFINITY)
+				mob.take_oxygen_deprivation(-INFINITY)
+				mob.take_eye_damage(-INFINITY)
+				mob.paralysis = 0
+				mob.stunned = 0
+				mob.weakened = 0
+				mob.radiation = 0
+				mob.take_brain_damage(-120)
+				mob.health = mob.max_health
+				mob.updatehealth()
+				if (mob.stat > 1)
+					mob.stat=0
+				mob.emote("scream")
+				mob.visible_message("<span style=\"color:red\"><B>[mob]</B> rises from the ashes!</span>")
+				fireflash_sm(get_turf(mob), 8, rand(3000, 6000), 500)
+		return 1
 
 	say_verb()
 		return "sizzles"
