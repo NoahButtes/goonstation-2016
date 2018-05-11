@@ -3688,7 +3688,7 @@
 					return
 
 		//GENETIC INSTABILITY FUN STUFF
-		if (src.is_changeling())
+		if (src.is_changeling() || src.isfireelemental) //I imagine animated flames probably don't have genes
 			return
 
 		var/genetic_stability = 100
@@ -6008,6 +6008,16 @@
 
 				qdel(src.handcuffed)
 				src.handcuffed = null
+				src.update_clothing()
+				return
+			if (isfireelemental(src))
+				for (var/mob/O in AIviewers(src))
+					O.show_message(text("<span style=\"color:red\"><B>[] vaporizes the handcuffs with unimaginable heat!</B></span>", src), 1)
+				boutput(src, "<span style=\"color:blue\">You vaporize your handcuffs.</span>")
+				
+				qdel(src.handcuffed)
+				src.handcuffed = null
+				new /obj/decal/cleanable/ash(src.loc)
 				src.update_clothing()
 				return
 		if (src.bioHolder.HasEffect("hulk"))
