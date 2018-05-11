@@ -506,8 +506,8 @@ datum
 								H.emote("scream")
 								for(var/mob/O in AIviewers(H, null))
 									O.show_message(text("<span style=\"color:red\"><b>[] begins to smolder and sputter!</b></span>", H), 1)
-								boutput(H, "<span style=\"color:red\">Fire Fighting Foam! It doesn't burn!</span>") //HEH
-								var/brutedmg = volume * 1.25
+								boutput(H, "<span style=\"color:red\">FIRE FIGHTING FOAM! It doesn't burn!</span>") //HEH
+								var/brutedmg = volume * 5.00 //too much???
 								H.TakeDamage("chest", 0, brutedmg, 0, DAMAGE_BRUTE)
 								H.updatehealth()
 
