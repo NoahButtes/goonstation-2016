@@ -235,7 +235,7 @@
 
 /mob/living/carbon/human/ex_act(severity)
 	..() // Logs.
-	if (src.nodamage) return
+	if (src.nodamage || isfireelemental(src)) return
 	// there used to be mining radiation check here which increases severity by one
 	// this needs to be derived from material properties instead and is disabled for now
 	src.flash(30)
