@@ -138,6 +138,9 @@
 
 	if (istype(src, /mob/living/carbon/human/))
 		var/mob/living/carbon/human/H = src
+		
+		if(isfireelemental(H))
+			return 0
 
 		if (rad_strength >= 0 && H.bioHolder && H.bioHolder.HasEffect("rad_resist"))
 			return 0
