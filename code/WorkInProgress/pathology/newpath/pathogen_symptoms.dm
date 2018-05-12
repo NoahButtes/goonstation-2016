@@ -215,43 +215,41 @@ datum/pathogeneffects/malevolent
 // The following lines are the probably undocumented (well at least my part - Marq) hell of the default symptoms.
 datum/pathogeneffects/malevolent/coughing
 	name = "Coughing"
-	desc = "Violent coughing occasionally paralyzes the infected."
+	desc = "Violent coughing occasionally plagues the infected."
 	infect_type = INFECT_AREA
 	rarity = RARITY_COMMON
 	permeability_score = 15
 	spread = SPREAD_FACE | SPREAD_HANDS | SPREAD_AIR
 	disease_act(var/mob/M as mob, var/datum/pathogen/origin)
+		if (!origin.symptomatic)
+			return
 		switch (origin.stage)
 			if (1)
 				if (prob(3))
-					if (origin.symptomatic)
-						M.show_message("<span style=\"color:red\">You cough.</span>")
+					M.show_message("<span style=\"color:red\">You cough.</span>")
 					infect(M, origin)
 			if (2)
 				if (prob(5))
-					if (origin.symptomatic)
-						M.visible_message("<span style=\"color:red\">[M] coughs!</span>", "<span style=\"color:red\">You cough.</span>", "<span style=\"color:red\">You hear someone coughing.</span>")
-						M.drop_item()
+					M.visible_message("<span style=\"color:red\">[M] coughs!</span>", "<span style=\"color:red\">You cough.</span>", "<span style=\"color:red\">You hear someone coughing.</span>")
+					//M.drop_item()
 					infect(M, origin)
 			if (3)
 				if (prob(7))
-					if (origin.symptomatic)
-						M.visible_message("<span style=\"color:red\">[M] coughs violently!</span>", "<span style=\"color:red\">You cough violently!</span>", "<span style=\"color:red\">You hear someone cough violently!</span>")
-						M.stunned += 1
+					M.visible_message("<span style=\"color:red\">[M] coughs violently!</span>", "<span style=\"color:red\">You cough violently!</span>", "<span style=\"color:red\">You hear someone cough violently!</span>")
+					//M.stunned += 1
 					infect(M, origin)
 
 			if (4)
 				if (prob(10))
-					if (origin.symptomatic)
-						M.visible_message("<span style=\"color:red\">[M] coughs violently!</span>", "<span style=\"color:red\">You cough violently!</span>", "<span style=\"color:red\">You hear someone cough violently!</span>")
-						M.stunned += 2
+					M.visible_message("<span style=\"color:red\">[M] coughs violently!</span>", "<span style=\"color:red\">You cough violently!</span>", "<span style=\"color:red\">You hear someone cough violently!</span>")
+					M.TakeDamage("chest", 1, 0)
 					infect(M, origin)
 
 			if (5)
 				if (prob(10))
-					if (origin.symptomatic)
-						M.visible_message("<span style=\"color:red\">[M] coughs violently!</span>", "<span style=\"color:red\">You cough violently!</span>", "<span style=\"color:red\">You hear someone cough violently!</span>")
-						M.stunned += 3
+					M.visible_message("<span style=\"color:red\">[M] coughs very violently!</span>", "<span style=\"color:red\">You cough very violently!</span>", "<span style=\"color:red\">You hear someone cough very violently!</span>")
+					//M.stunned += 3
+					M.TakeDamage("chest", 2, 0)
 					infect(M, origin)
 
 	may_react_to()
@@ -277,7 +275,7 @@ datum/pathogeneffects/malevolent/indigestion
 					M.show_message("<span style=\"color:red\">Your stomach hurts.</span>")
 					M.updatehealth()
 					if (prob(15))
-						M.weakened += 1
+						//M.weakened += 1
 
 	react_to(var/R, var/zoom)
 		if (R == "saline")
@@ -305,7 +303,8 @@ datum/pathogeneffects/malevolent/muscleache
 					M.show_message("<span style=\"color:red\">Your muscles ache.</span>")
 					M.updatehealth()
 					if (prob(15))
-						M.stunned += 1
+						//M.stunned += 1
+						M.TakeDamage("All", origin.stage-3, 0)
 
 	react_to(var/R, var/zoom)
 		if (R == "saline")
@@ -330,34 +329,34 @@ datum/pathogeneffects/malevolent/sneezing
 			if (1)
 				if (prob(10))
 					M.visible_message("<span style=\"color:red\">[M] sneezes!</span>", "<span style=\"color:red\">You sneeze.</span>", "<span style=\"color:red\">You hear someone sneezing.</span>")
-					if (prob(3))
-						M.drop_item()
+					/*if (prob(3))
+						M.drop_item()*/
 					infect(M, origin)
 			if (2)
 				if (prob(12))
 					M.visible_message("<span style=\"color:red\">[M] sneezes!</span>", "<span style=\"color:red\">You sneeze.</span>", "<span style=\"color:red\">You hear someone sneezing.</span>")
-					if (prob(5))
-						M.drop_item()
+					/*if (prob(5))
+						M.drop_item()*/
 					infect(M, origin)
 			if (3)
 				if (prob(15))
 					M.visible_message("<span style=\"color:red\">[M] sneezes!</span>", "<span style=\"color:red\">You sneeze.</span>", "<span style=\"color:red\">You hear someone sneezing.</span>")
-					if (prob(7))
-						M.drop_item()
+					/*if (prob(7))
+						M.drop_item()*/
 					infect(M, origin)
 
 			if (4)
 				if (prob(20))
 					M.visible_message("<span style=\"color:red\">[M] sneezes!</span>", "<span style=\"color:red\">You sneeze.</span>", "<span style=\"color:red\">You hear someone sneezing.</span>")
-					if (prob(14))
-						M.drop_item()
+					/*if (prob(14))
+						M.drop_item()*/
 					infect(M, origin)
 
 			if (5)
 				if (prob(20))
 					M.visible_message("<span style=\"color:red\">[M] sneezes!</span>", "<span style=\"color:red\">You sneeze.</span>", "<span style=\"color:red\">You hear someone sneezing.</span>")
-					if (prob(25))
-						M.drop_item()
+					/*if (prob(25))
+						M.drop_item()*/
 					infect(M, origin)
 
 	may_react_to()
@@ -1638,7 +1637,7 @@ datum/pathogeneffects/malevolent/chills
 				if (prob(15))
 					M.bodytemperature -= 12
 					M.show_message("<span style=\"color:red\">You feel rather cold.</span>")
-					M.stunned += 1
+					//M.stunned += 1
 					M.emote("shiver")
 		if (M.bodytemperature < 0)
 			M.bodytemperature = 0
