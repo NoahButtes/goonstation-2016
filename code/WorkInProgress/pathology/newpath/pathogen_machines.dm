@@ -877,7 +877,8 @@
 
 					boutput(usr, "<span style=\"color:blue\">The DNA sequence is assembled by the manipulator.</span>")
 					src.manip.loaded = L
-					if (prob(10))
+					//don't reactivate this unless the pathologists are being thundering buttheads
+					/*if (prob(10))
 						if (prob(75))
 							boutput(usr, "<span style=\"color:red\">The splicing session is completed imperfectly. The DNA sequence mutates.</span>")
 							src.manip.loaded.reference.mutate()
@@ -889,9 +890,10 @@
 							qdel(src.manip.loaded)
 							new /obj/item/reagent_containers/glass/vial(get_turf(src.manip)) //Quit eating vials you fuck -Spy
 					else
-						boutput(usr, "<span style=\"color:blue\">The splicing session is concluded perfectly. The DNA sequence remains intact.</span>")
-						success=1
-						src.manip.loaded.move_mutation()
+					*/
+					boutput(usr, "<span style=\"color:blue\">The splicing session is concluded perfectly. The DNA sequence remains intact.</span>")
+					success=1
+					src.manip.loaded.move_mutation()
 					if (src.manip.loaded && !src.manip.loaded.disposed)
 						src.manip.loaded.reference.cdc_announce(usr)
 
@@ -1441,6 +1443,21 @@
 				var/added = min(10, src.antiagent.reagents.maximum_volume - src.antiagent.reagents.total_volume)
 				src.antiagent.reagents.add_reagent(href_list["antiagent"], added)
 				boutput(usr, "<span style=\"color:blue\">[added] units of anti-agent added to the beaker.</span>")
+			else if (href_list["buymats"])
+				var/amount = input("50 credits per 1 point.","Buying Materials") as null|num
+				if (amount + genResearch.researchMaterial > genResearch.max_material)
+					amount = genResearch.max_material - genResearch.researchMaterial
+					boutput(usr, "You cannot exceed [genResearch.max_material] research materials with this option.")
+				if (!amount || amount <= 0)
+					return
+
+				var/cost = amount * 50
+				if (cost > wagesystem.research_budget)
+					info_html = "<p>Insufficient research budget to make that transaction.</p>"
+				else
+					info_html = "<p>Transaction successful.</p>"
+					wagesystem.research_budget -= cost
+					genResearch.researchMaterial += amount
 		show_interface(usr)
 
 	proc/finish_creation(var/use_suppressant, var/use_antiagent)
