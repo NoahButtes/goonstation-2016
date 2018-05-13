@@ -1290,7 +1290,9 @@
 					output_text += "#[sel_vial] [V.name] (empty)<br><br>"
 			else
 				output_text += "None<br><br>"
-
+			output_text += "<b>Research Budget:</b> [wagesystem.research_budget] Credits<br>"
+			output_text += "<a href='?src=\ref[src];buymats=1'>Synthesize a new pathogen sample for 2000 credits</a><br>"
+			output_text += "<br>"
 			output_text += "<b>Inserted vials:</b><br>"
 			for (var/i = 1, i <= 5, i++)
 				if (vials[i])
@@ -1444,20 +1446,23 @@
 				src.antiagent.reagents.add_reagent(href_list["antiagent"], added)
 				boutput(usr, "<span style=\"color:blue\">[added] units of anti-agent added to the beaker.</span>")
 			else if (href_list["buymats"])
-				var/amount = input("50 credits per 1 point.","Buying Materials") as null|num
-				if (amount + genResearch.researchMaterial > genResearch.max_material)
-					amount = genResearch.max_material - genResearch.researchMaterial
-					boutput(usr, "You cannot exceed [genResearch.max_material] research materials with this option.")
-				if (!amount || amount <= 0)
-					return
-
-				var/cost = amount * 50
-				if (cost > wagesystem.research_budget)
-					info_html = "<p>Insufficient research budget to make that transaction.</p>"
-				else
-					info_html = "<p>Transaction successful.</p>"
-					wagesystem.research_budget -= cost
-					genResearch.researchMaterial += amount
+				var/confirm = alert("Are you sure you want to spend 2000 credits to manufacture a new pathogen culture? This will take about two minutes.", "Confirm Purchase", "Yes", "No")
+				if (confirm == "Yes")
+					var/cost = 2000
+					if (cost > wagesystem.research_budget)
+						boutput(usr, "<span style=\"color:red\">Insufficient research budget to make that transaction.</span>")
+					else
+						boutput(usr, "<span style=\"color:blue\">Transaction successful.</span>")
+						wagesystem.research_budget -= cost
+						machine_state = 1
+						icon_state = "synth2"
+						src.visible_message("The [src.name] bubbles and begins synthesis.", "You hear a bubbling noise.")
+						spawn (120)
+							machine_state = 0
+							icon_state = "synth1"
+							for (var/mob/C in viewers(src))
+								C.show_message("The [src.name] shuts down and ejects a new pathogen sample.", 3)
+							new/obj/item/reagent_containers/glass/vial/prepared(src.loc)				
 		show_interface(usr)
 
 	proc/finish_creation(var/use_suppressant, var/use_antiagent)
