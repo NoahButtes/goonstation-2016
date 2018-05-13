@@ -1945,3 +1945,83 @@ datum/pathogeneffects/malevolent/senility
 					M.drop_item()
 					M.take_brain_damage(4)
 
+
+datum/pathogeneffects/malevolent/mutation
+	name = "Random Mutations"
+	desc = "The infected individual occasionally mutates wildly!"
+	infect_type = INFECT_NONE
+	rarity = RARITY_VERY_RARE
+	
+	//multiply origin.stage by this number to get the percent probability of a mutation occurring per disease_act
+	//please keep it between 1 and 20, inclusive, if possible.
+	var/mut_prob_mult = 4
+	
+	//this sets the kind of mutations we can pick from: "good" for good mutations, "bad" for bad mutations, "either" for both
+	var/mutation_type = "either"
+	
+	//set this to 1 to pick mutations weighted by their rarities, set it to 0 to pick with equal weighting
+	var/respect_probability = 1
+	
+	//probability in percent form (1-100) of a chromosome being applied to a mutation
+	var/chrom_prob = 50
+	
+	//list of valid chromosome types to pick from. In this case, all extant ones except the weakener
+	var/list/chrom_types = list(/datum/dna_chromosome, /datum/dna_chromosome/anti_mutadone, /datum/dna_chromosome/stealth, /datum/dna_chromosome/power_enhancer, /datum/dna_chromosome/cooldown_reducer, /datum/dna_chromosome/safety)
+
+	proc/mutate(var/mob/M, var/datum/pathogen/origin)
+		if (M.bioHolder)
+			if(prob(chrom_prob))
+				var/type_to_make = pick(chrom_types)
+				var/datum/dna_chromosome/C = new type_to_make()
+				M.bioHolder.RandomEffect(mutation_type, respect_probability, C)
+			else
+				M.bioHolder.RandomEffect(mutation_type, respect_probability)
+
+	disease_act(var/mob/M, var/datum/pathogen/origin)
+		if (!origin.symptomatic)
+			return
+		if (prob(origin.stage * mut_prob_mult))
+			mutate(M, origin)
+
+	may_react_to()
+		return "The pathogen appears to be shifting and distorting its genetic structure rapidly."
+	
+	react_to(var/R, var/zoom)
+		if (R == "mutadone")
+			if (zoom)
+				return "Approximately 82.7% of the individual microbodies appear to have returned to genetic normalcy."
+			else
+				return "The pathogen appears to have settled down significantly in the presence of the mutadone."
+
+datum/pathogeneffects/malevolent/mutation/reinforced
+	name = "Random Reinforced Mutations"
+	desc = "The infected individual occasionally mutates wildly and permanently!"
+	mut_prob_mult = 3
+	chrome_prob = 100 //guaranteed chromosome application
+	chrom_types = list(/datum/dna_chromosome/anti_mutadone) //reinforcer chromosome
+	
+	react_to(var/R, var/zoom)
+		if (R == "mutadone")
+			if (zoom)
+				return "Approximately 0.00% of the individual microbodies appear to have returned to genetic normalcy."
+			else
+				return "The pathogen seems to have developed a resistance to the mutadone."
+
+//Technically, this SHOULD be under datum/pathogeneffects/benevolent, but doing it this way avoids duplicating code.
+//Plus, it's not exactly unprecedented for a malevolent effect to actually be beneficial.
+//Just look at the sunglass gland symptom
+datum/pathogeneffects/malevolent/mutation/beneficial
+	name = "Random Good and Stable Mutations"
+	desc = "The infected individual occasionally mutates wildly and beneficially!"
+	mut_prob_mult = 3
+	mutation_type = "good"
+	chrome_prob = 100 //guranteed chromosome application
+	chrom_types = list(/datum/dna_chromosome) //stabilizer, no instability caused
+	
+	react_to(var/R, var/zoom)
+		if (R == "mutadone")
+			if (zoom)
+				return "Approximately 99.82% of the individual microbodies appear to have returned to genetic normalcy. Approximately 100.00% of the individual microbodies appear disappointed about that."
+			else
+				return "The pathogen seems to have reluctantly settled down in the presence of the mutadone."
+
