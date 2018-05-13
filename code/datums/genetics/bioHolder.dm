@@ -520,7 +520,7 @@ var/list/datum/bioEffect/bioEffectList = list()
 	proc/GetEffectFromPool(var/id)
 		return effectPool[id]
 
-	proc/RandomEffect(var/type = "either", var/useProbability = 1)
+	proc/RandomEffect(var/type = "either", var/useProbability = 1, var/datum/dna_chromosome/toApply)
 		//Adds a random effect to this holder. Argument controls which type. bad , good, either.
 		var/list/filtered = new/list()
 
@@ -545,8 +545,12 @@ var/list/datum/bioEffect/bioEffectList = list()
 			E = pickweight(filtered)
 		else
 			E = pick(filtered)
-
-		AddEffect(E.id)
+		
+		if (istype(toApply))
+			toApply.apply(E)
+			AddEffectInstance(E)
+		else
+			AddEffect(E.id)
 
 		return E.id
 /*
