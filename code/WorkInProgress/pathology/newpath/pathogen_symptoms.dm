@@ -1927,3 +1927,61 @@ datum/pathogeneffects/malevolent/senility
 					M.drop_item()
 					M.take_brain_damage(4)
 
+datum/pathogeneffects/malevolent/beesneeze
+	name = "Projectile Bee Egg Sneezing"
+	desc = "The infected sneezes bee eggs frequently."
+	infect_type = INFECT_AREA_LARGE
+	rarity = RARITY_UNCOMMON
+	permeability_score = 25
+	spread = SPREAD_FACE | SPREAD_HANDS | SPREAD_AIR | SPREAD_BODY
+	infection_coefficient = 2
+	
+	proc/sneeze(var/mob/M, var/datum/pathogen/origin)
+		if (!M || !origin)
+			return
+		var/turf/T = get_turf(M)
+		var/flyroll = rand(10)
+		var/turf/target = locate(M.x,M.y,M.z)
+		var/chosen_phrase = pick("<B><span style=\"color:red\">W</span><span style=\"color:blue\">H</span>A<span style=\"color:red\">T</span><span style=\"color:blue\">.</span></B>","<span style=\"color:red\"><B>What the [pick("hell","fuck","christ","shit")]?!</B></span>","<span style=\"color:red\"><B>Uhhhh. Uhhhhhhhhhhhhhhhhhhhh.</B></span>","<span style=\"color:red\"><B>"Oh [pick("no","dear","god","dear god","sweet merciful [pick("neptune","poseidon")]")]!"</B></span>")
+		switch (M.dir)
+			if (NORTH)
+				target = locate(M.x, M.y+flyroll, M.z)
+			if (SOUTH)
+				target = locate(M.x, M.y-flyroll, M.z)
+			if (EAST)
+				target = locate(M.x+flyroll, M.y, M.z)
+			if (WEST)
+				target = locate(M.x-flyroll, M.y, M.z)
+		var/obj/item/reagent_containers/food/snacks/ingredient/egg/bee/toThrow = new /obj/item/reagent_containers/food/snacks/ingredient/egg/bee(T)
+		M.visible_message("<span style=\"color:red\">[M] sneezes out a space bee egg!</span> [chosen_phrase]", "<span style=\"color:red\">You sneeze out a bee egg!</span> [chosen_phrase]", "<span style=\"color:red\">You hear someone sneezing.</span>")
+		toThrow.throw_at(target, 6, 1)
+		infect(M, origin)
+	
+	disease_act(var/mob/M as mob, var/datum/pathogen/origin)
+		if (!origin.symptomatic)
+			return
+		switch (origin.stage)
+			if (1)
+				if (prob(10))
+					sneeze(M, origin)
+			if (2)
+				if (prob(12))
+					sneeze(M, origin)
+			if (3)
+				if (prob(15))
+					sneeze(M, origin)
+			if (4)
+				if (prob(20))
+					sneeze(M, origin)
+			if (5)
+				if (prob(27))
+					sneeze(M, origin)
+
+	may_react_to()
+		return "The pathogen appears to generate a high amount of fluids. Honey, to be more specific."
+
+	react_to(var/R, var/zoom)
+		if (R == "pepper")
+			return "The pathogen violently discharges honey when coming in contact with pepper."
+
+
