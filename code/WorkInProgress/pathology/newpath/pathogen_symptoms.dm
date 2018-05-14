@@ -1935,14 +1935,14 @@ datum/pathogeneffects/malevolent/beesneeze
 	permeability_score = 25
 	spread = SPREAD_FACE | SPREAD_HANDS | SPREAD_AIR | SPREAD_BODY
 	infection_coefficient = 2
-	
+
 	proc/sneeze(var/mob/M, var/datum/pathogen/origin)
 		if (!M || !origin)
 			return
 		var/turf/T = get_turf(M)
 		var/flyroll = rand(10)
 		var/turf/target = locate(M.x,M.y,M.z)
-		var/chosen_phrase = pick("<B><span style=\"color:red\">W</span><span style=\"color:blue\">H</span>A<span style=\"color:red\">T</span><span style=\"color:blue\">.</span></B>","<span style=\"color:red\"><B>What the [pick("hell","fuck","christ","shit")]?!</B></span>","<span style=\"color:red\"><B>Uhhhh. Uhhhhhhhhhhhhhhhhhhhh.</B></span>","<span style=\"color:red\"><B>"Oh [pick("no","dear","god","dear god","sweet merciful [pick("neptune","poseidon")]")]!"</B></span>")
+		var/chosen_phrase = pick("<B><span style=\"color:red\">W</span><span style=\"color:blue\">H</span>A<span style=\"color:red\">T</span><span style=\"color:blue\">.</span></B>","<span style=\"color:red\"><B>What the [pick("hell","fuck","christ","shit")]?!</B></span>","<span style=\"color:red\"><B>Uhhhh. Uhhhhhhhhhhhhhhhhhhhh.</B></span>","<span style=\"color:red\"><B>Oh [pick("no","dear","god","dear god","sweet merciful [pick("neptune","poseidon")]")]!</B></span>")
 		switch (M.dir)
 			if (NORTH)
 				target = locate(M.x, M.y+flyroll, M.z)
@@ -1956,7 +1956,7 @@ datum/pathogeneffects/malevolent/beesneeze
 		M.visible_message("<span style=\"color:red\">[M] sneezes out a space bee egg!</span> [chosen_phrase]", "<span style=\"color:red\">You sneeze out a bee egg!</span> [chosen_phrase]", "<span style=\"color:red\">You hear someone sneezing.</span>")
 		toThrow.throw_at(target, 6, 1)
 		infect(M, origin)
-	
+
 	disease_act(var/mob/M as mob, var/datum/pathogen/origin)
 		if (!origin.symptomatic)
 			return
@@ -1989,20 +1989,20 @@ datum/pathogeneffects/malevolent/mutation
 	desc = "The infected individual occasionally mutates wildly!"
 	infect_type = INFECT_NONE
 	rarity = RARITY_VERY_RARE
-	
+
 	//multiply origin.stage by this number to get the percent probability of a mutation occurring per disease_act
 	//please keep it between 1 and 20, inclusive, if possible.
 	var/mut_prob_mult = 4
-	
+
 	//this sets the kind of mutations we can pick from: "good" for good mutations, "bad" for bad mutations, "either" for both
 	var/mutation_type = "either"
-	
+
 	//set this to 1 to pick mutations weighted by their rarities, set it to 0 to pick with equal weighting
 	var/respect_probability = 1
-	
+
 	//probability in percent form (1-100) of a chromosome being applied to a mutation
 	var/chrom_prob = 50
-	
+
 	//list of valid chromosome types to pick from. In this case, all extant ones except the weakener
 	var/list/chrom_types = list(/datum/dna_chromosome, /datum/dna_chromosome/anti_mutadone, /datum/dna_chromosome/stealth, /datum/dna_chromosome/power_enhancer, /datum/dna_chromosome/cooldown_reducer, /datum/dna_chromosome/safety)
 
@@ -2023,7 +2023,7 @@ datum/pathogeneffects/malevolent/mutation
 
 	may_react_to()
 		return "The pathogen appears to be shifting and distorting its genetic structure rapidly."
-	
+
 	react_to(var/R, var/zoom)
 		if (R == "mutadone")
 			if (zoom)
@@ -2035,9 +2035,9 @@ datum/pathogeneffects/malevolent/mutation/reinforced
 	name = "Random Reinforced Mutations"
 	desc = "The infected individual occasionally mutates wildly and permanently!"
 	mut_prob_mult = 3
-	chrome_prob = 100 //guaranteed chromosome application
+	chrom_prob = 100 //guaranteed chromosome application
 	chrom_types = list(/datum/dna_chromosome/anti_mutadone) //reinforcer chromosome
-	
+
 	react_to(var/R, var/zoom)
 		if (R == "mutadone")
 			if (zoom)
@@ -2053,9 +2053,9 @@ datum/pathogeneffects/malevolent/mutation/beneficial
 	desc = "The infected individual occasionally mutates wildly and beneficially!"
 	mut_prob_mult = 3
 	mutation_type = "good"
-	chrome_prob = 100 //guranteed chromosome application
+	chrom_prob = 100 //guranteed chromosome application
 	chrom_types = list(/datum/dna_chromosome) //stabilizer, no instability caused
-	
+
 	react_to(var/R, var/zoom)
 		if (R == "mutadone")
 			if (zoom)
