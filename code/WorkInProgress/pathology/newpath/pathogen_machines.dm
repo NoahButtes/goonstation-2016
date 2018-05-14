@@ -1446,7 +1446,7 @@
 				src.antiagent.reagents.add_reagent(href_list["antiagent"], added)
 				boutput(usr, "<span style=\"color:blue\">[added] units of anti-agent added to the beaker.</span>")
 			else if (href_list["buymats"])
-				var/confirm = alert("Are you sure you want to spend 2000 credits to manufacture a new pathogen culture? This will take about two minutes.", "Confirm Purchase", "Yes", "No")
+				var/confirm = alert("Are you sure you want to spend 2000 credits to manufacture a new pathogen culture? This will take about thirty seconds", "Confirm Purchase", "Yes", "No")
 				if (confirm == "Yes")
 					var/cost = 2000
 					if (cost > wagesystem.research_budget)
@@ -1457,7 +1457,7 @@
 						machine_state = 1
 						icon_state = "synth2"
 						src.visible_message("The [src.name] bubbles and begins synthesis.", "You hear a bubbling noise.")
-						spawn (120)
+						spawn (300)
 							machine_state = 0
 							icon_state = "synth1"
 							for (var/mob/C in viewers(src))
