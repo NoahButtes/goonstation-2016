@@ -79,6 +79,8 @@ datum/controller/pathogen
 	var/list/nutrients = list()
 	var/list/media = list()
 	var/list/cure_bases = list()
+	
+	var/list/linked_mobs = list()
 
 	proc/get_microbody(var/strength)
 		var/datum/microbody/M
