@@ -179,3 +179,41 @@ datum/pathogeneffects/benevolent/oxygenproduction
 		if (M.get_oxygen_deprivation())
 			M.take_oxygen_deprivation(0 - origin.stage)
 			M.updatehealth()
+
+datum/pathogeneffects/benevolent/mindexpansion
+	name = "Mind Expansion"
+	desc = "The pathogen expands the mental capabilities of the host, healing brain damage and enabling them to mentally commune with others."
+	rarity = RARITY_VERY_RARE
+	
+	oninfect(var/mob/M as mob, var/datum/pathogen/origin)
+		if (!origin.symptomatic)
+			return
+		if (!(M in pathogen_controller.linked_mobs))
+			pathogen_controller.linked_mobs += M
+	
+	oncure(var/mob/M as mob, var/datum/pathogen/origin)
+		if (!origin.symptomatic)
+			return
+		if (M in pathogen_controller.linked_mobs)
+			for (var/uid in M.pathogens)
+				var/datum/pathogen/P = M.pathogens[uid]
+				if (P == origin)
+					continue
+				else if (!P.symptomatic)
+					continue
+				else
+					for (var/datum/pathogeneffects/E in P.effects)
+						if (istype(E, /datum/pathogeneffects/benevolent/mindexpansion)) //we aren't the only symptom of this type
+							return //so we stop looking entirely. 
+			pathogen_controller.linked_mobs -= M //we didn't find any other pathogens with this symptom, so we can go ahead and remove the link
+	
+	may_react_to()
+		return "The pathogenic bodies appear to move and sway in unison with one another."
+
+	disease_act(var/mob/M as mob, var/datum/pathogen/origin)
+		if (!origin.symptomatic)
+			return
+		if (M.get_brain_damage())
+			M.take_brain_damage(0 - origin.stage)
+			M.updatehealth()
+
