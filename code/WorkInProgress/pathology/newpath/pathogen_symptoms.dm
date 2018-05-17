@@ -117,11 +117,14 @@ datum/pathogeneffects
 		return 1
 	
 	//oncure(mob, datum/pathogen) : void
+	//primarily for undoing the effects of oninfect
 	// OVERRIDE: Overriding this is situational.
 	proc/oncure(var/mob/M as mob, var/datum/pathogen/origin)
 		return
 	
 	//oninfect(mob, datum/pathogen) : void
+	//Please don't use this for anything that would be immediately visible to the infected individual.
+	//That's what infect_message is for.
 	// OVERRIDE: Overriding this is situational.
 	proc/oninfect(var/mob/M as mob, var/datum/pathogen/origin)
 		return
