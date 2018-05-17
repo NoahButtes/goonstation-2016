@@ -651,6 +651,13 @@
 		var/psychic_link = src.get_psychic_link()
 		if (ismob(psychic_link))
 			boutput(psychic_link, msg)
+		
+		if (src in pathogen_controller.linked_mobs)
+			for (var/mob/L in pathogen_control.linked_mobs)
+				if (src == L)
+					continue
+				else
+					boutput(L, msg)
 
 		if (istype(src, /mob/living))
 			for (var/mob/dead/target_observer/observer in src:observers)
