@@ -5765,6 +5765,7 @@
 		src.pathogens += Q.pathogen_uid
 		src.pathogens[Q.pathogen_uid] = Q
 		Q.infected = src
+		Q.oninfect()
 		logTheThing("pathology", src, null, "is infected by [Q].")
 		return 1
 	else
@@ -5778,6 +5779,7 @@
 			pool(C)
 			src.pathogens[Q.pathogen_uid] = Q
 			Q.infected = src
+			Q.oninfect()
 			return 1
 	return 0
 
@@ -5785,6 +5787,7 @@
 	if (P.pathogen_uid in src.pathogens)
 		pathogen_controller.mob_cured(src.pathogens[P.pathogen_uid], src)
 		var/datum/pathogen/Q = src.pathogens[P.pathogen_uid]
+		Q.oncure()
 		var/pname = Q.name
 		src.pathogens -= P.pathogen_uid
 		var/datum/microbody/M = P.body_type
