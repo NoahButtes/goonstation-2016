@@ -1396,6 +1396,18 @@ datum/pathogen
 		for (var/effect in src.effects)
 			. *= effect:onemote(infected, act, src)
 
+	// Act when cured. Does not return anything, the cure always happens.
+	proc/oncure()
+		for (var/effect in src.effects)
+			effect:oncure(infected, src)
+		suppressant.oncure(infected, src)
+
+	// Act upon successful infection. Does not return anything, the infection always happens.
+	proc/oninfect()
+		for (var/effect in src.effects)
+			effect:oninfect(infected, src)
+		suppressant.oninfect(infected, src)
+
 	proc/add_new_symptom(var/list/allowed, var/allow_duplicates = 0)
 		for (var/i = 0, i < 10, i++)
 			var/T = pick(allowed)
