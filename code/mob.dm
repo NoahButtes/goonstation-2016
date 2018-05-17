@@ -653,7 +653,7 @@
 			boutput(psychic_link, msg)
 		
 		if (src in pathogen_controller.linked_mobs)
-			for (var/mob/L in pathogen_control.linked_mobs)
+			for (var/mob/L in pathogen_controller.linked_mobs)
 				if (src == L)
 					continue
 				else
