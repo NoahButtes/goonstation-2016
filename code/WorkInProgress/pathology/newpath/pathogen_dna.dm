@@ -102,10 +102,13 @@ datum/pathogendna
 	proc/manipulate(value, direction)
 		var/datum/pathogendna/this = src
 		src = null
+		//I think the chance to mutate serves as a perfectly fine deterrent to overengineering your pathogen's DNA
+		/*
 		if (prob(2))
 			del this
 			return 0
-		else if (prob(4))
+		*/
+		if (prob(4))
 			this.reference.mutate()
 			this.recalculate()
 			this.reverse_engineer()
