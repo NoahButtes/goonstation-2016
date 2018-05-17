@@ -115,6 +115,16 @@ datum/pathogeneffects
 	// OVERRIDE: Overriding this is situational.
 	proc/onemote(var/mob/target, act, var/datum/pathogen/P)
 		return 1
+	
+	//oncure(mob, datum/pathogen) : void
+	// OVERRIDE: Overriding this is situational.
+	proc/oncure(var/mob/M as mob, var/datum/pathogen/origin)
+		return
+	
+	//oninfect(mob, datum/pathogen) : void
+	// OVERRIDE: Overriding this is situational.
+	proc/oninfect(var/mob/M as mob, var/datum/pathogen/origin)
+		return
 
 	// End of events: please do not add any event definitions outside this block.
 	// ====
