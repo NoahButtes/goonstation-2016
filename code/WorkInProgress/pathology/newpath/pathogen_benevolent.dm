@@ -194,20 +194,20 @@ datum/pathogeneffects/benevolent/mindexpansion
 	oncure(var/mob/M as mob, var/datum/pathogen/origin)
 		if (!origin.symptomatic)
 			return
-			if (istype(M, /mob/living/carbon/human))
-				var/mob/living/carbon/human/H = M
-				if (H in pathogen_controller.linked_mobs)
-					for (var/uid in H.pathogens)
-						var/datum/pathogen/P = H.pathogens[uid]
-						if (P == origin)
-							continue
-						else if (!P.symptomatic)
-							continue
-						else
-							for (var/datum/pathogeneffects/E in P.effects)
-								if (istype(E, /datum/pathogeneffects/benevolent/mindexpansion)) //we aren't the only symptom of this type
-									return //so we stop looking entirely. 
-					pathogen_controller.linked_mobs -= H //we didn't find any other pathogens with this symptom, so we can go ahead and remove the link
+		if (istype(M, /mob/living/carbon/human))
+			var/mob/living/carbon/human/H = M
+			if (H in pathogen_controller.linked_mobs)
+				for (var/uid in H.pathogens)
+					var/datum/pathogen/P = H.pathogens[uid]
+					if (P == origin)
+						continue
+					else if (!P.symptomatic)
+						continue
+					else
+						for (var/datum/pathogeneffects/E in P.effects)
+							if (istype(E, /datum/pathogeneffects/benevolent/mindexpansion)) //we aren't the only symptom of this type
+								return //so we stop looking entirely. 
+				pathogen_controller.linked_mobs -= H //we didn't find any other pathogens with this symptom, so we can go ahead and remove the link
 
 	may_react_to()
 		return "The pathogenic bodies appear to move and sway in unison with one another."
