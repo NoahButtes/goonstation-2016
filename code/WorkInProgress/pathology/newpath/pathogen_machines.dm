@@ -1447,7 +1447,7 @@
 				boutput(usr, "<span style=\"color:blue\">[added] units of anti-agent added to the beaker.</span>")
 			else if (href_list["buymats"])
 				var/confirm = alert("Are you sure you want to spend 2000 credits to manufacture a new pathogen culture? This will take about thirty seconds", "Confirm Purchase", "Yes", "No")
-				if (confirm == "Yes")
+				if (confirm == "Yes" && machine_state == 0)
 					var/cost = 2000
 					if (cost > wagesystem.research_budget)
 						boutput(usr, "<span style=\"color:red\">Insufficient research budget to make that transaction.</span>")
