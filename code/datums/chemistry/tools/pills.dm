@@ -38,6 +38,7 @@
 		return
 
 	attack_self(mob/user as mob)
+		src.attack(user, user)
 		return
 
 	attack(mob/M as mob, mob/user as mob, def_zone)
