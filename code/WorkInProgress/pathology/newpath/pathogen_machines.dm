@@ -218,8 +218,8 @@
 	proc/message_parts(var/message)
 		var/cloc = findtext(message, ":")
 		if (cloc)
-			var/name = copytext(message, 1, cloc + 1)
-			var/data = copytext(message, cloc + 2)
+			var/name = copytext(message, 1, cloc)
+			var/data = copytext(message, cloc + 1)
 			return list(name, data)
 		else
 			return null
